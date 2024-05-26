@@ -1,10 +1,11 @@
+import { Tabs } from "expo-router";
+import React from "react";
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 import { Redirect, Slot, Stack, router, useNavigation } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import "react-native-reanimated";
 import { useAuth } from "@/context/authContext";
-import { Text } from "react-native";
-import { getUser } from "@/services/UserService";
 import { useUserStore } from "@/stores/userStore";
 
 export default function AppLayout() {
@@ -16,7 +17,7 @@ export default function AppLayout() {
     isLoadingAccess,
     isLoadingRefresh,
   } = useAuth();
-  const { fetchUser, id } = useUserStore();
+  const { fetchUser } = useUserStore();
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -29,16 +30,56 @@ export default function AppLayout() {
       });
     }
   }, [accessToken, refreshToken]);
+  const colorScheme = useColorScheme();
 
   return (
     <>
       {!accessToken && !refreshToken ? (
         <Redirect href="/login" />
       ) : (
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+        <Tabs
+          screenOptions={{
+            tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+            headerShown: false,
+          }}
+        >
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: "Contacts",
+              tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon
+                  name={focused ? "home" : "home-outline"}
+                  color={color}
+                />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="servers"
+            options={{
+              title: "Servers",
+              tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon
+                  name={focused ? "home" : "home-outline"}
+                  color={color}
+                />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="profile"
+            options={{
+              title: "Profile",
+              tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon
+                  name={focused ? "home" : "home-outline"}
+                  color={color}
+                />
+              ),
+            }}
+          />
+        </Tabs>
       )}
     </>
   );
