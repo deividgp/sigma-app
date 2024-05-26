@@ -1,9 +1,9 @@
 import { Image, StyleSheet, Platform, Text } from "react-native";
 import ServerItem from "./ServerItem";
-import { useUser } from "@/context/userContext";
+import { useUserStore } from "@/stores/userStore";
 
 export default function ServersList() {
-  const { user } = useUser();
+  const { user } = useUserStore();
 
   if (!user) {
     return <Text>Loading</Text>;

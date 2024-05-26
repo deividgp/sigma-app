@@ -6,7 +6,13 @@ import { Controller, useForm } from "react-hook-form";
 import { Redirect, Stack } from "expo-router";
 
 export default function Login() {
-  const { logIn, accessToken, refreshToken, isLoadingAccess, isLoadingRefresh } = useAuth();
+  const {
+    logIn,
+    accessToken,
+    refreshToken,
+    isLoadingAccess,
+    isLoadingRefresh,
+  } = useAuth();
   const {
     control,
     handleSubmit,
@@ -18,43 +24,53 @@ export default function Login() {
     return <Text>Loading</Text>;
   }
 
-  if (accessToken && refreshToken) {
-    return <Redirect href="/" />;
-    //router.replace("/login");
-  }
-
   const onSubmit = (data) => {
     logIn(data);
     navigation.navigate("(app)");
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Controller
-        control={control}
-        defaultValue={''}
-        render={({ field }) => (
-          <TextInput
-            {...field}
-            style={styles.input}
-            placeholder="Username or email"
+    <>
+      {accessToken && refreshToken ? (
+        <Redirect href="/" />
+      ) : (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Controller
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                style={styles.input}
+                placeholder="Username or email"
+              />
+            )}
+            name="usernameEmail"
+            rules={{ required: "You must enter your username or email" }}
           />
-        )}
-        name="usernameEmail"
-        rules={{ required: "You must enter your username or email" }}
-      />
-      <Controller
-        control={control}
-        defaultValue={''}
-        render={({ field }) => (
-          <TextInput {...field} style={styles.input} placeholder="Password" />
-        )}
-        name="password"
-        rules={{ required: "You must enter your password" }}
-      />
-      <Button title="Log in" onPress={handleSubmit(onSubmit)} />
-      <Button title="Sign up" onPress={() => navigation.navigate("signup")} />
-    </View>
+          <Controller
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                style={styles.input}
+                placeholder="Password"
+              />
+            )}
+            name="password"
+            rules={{ required: "You must enter your password" }}
+          />
+          <Button title="Log in" onPress={handleSubmit(onSubmit)} />
+          <Button
+            title="Sign up"
+            onPress={() => navigation.navigate("signup")}
+          />
+        </View>
+      )}
+    </>
   );
 }
 

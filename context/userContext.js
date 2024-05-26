@@ -7,7 +7,7 @@ export function useUser() {
   const value = React.useContext(UserContext);
   if (process.env.NODE_ENV !== "production") {
     if (!value) {
-      throw new Error("useAuth must be wrapped in a <AuthProvider />");
+      throw new Error("useAuth must be wrapped in a <UserProvider />");
     }
   }
 

@@ -1,7 +1,7 @@
-import { Image, StyleSheet, Platform, View, Button } from 'react-native';
+import { Image, StyleSheet, Platform, View, Button } from "react-native";
 
-import { ThemedText } from '@/components/ThemedText';
-import { useAuth } from '@/context/authContext';
+import { ThemedText } from "@/components/ThemedText";
+import { useAuth } from "@/context/authContext";
 
 export default function ProfileScreen() {
   const { logOut } = useAuth();
@@ -20,8 +20,8 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
   stepContainer: {
@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
     width: 290,
     bottom: 0,
     left: 0,
-    position: 'absolute',
+    position: "absolute",
   },
 });

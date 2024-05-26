@@ -24,47 +24,58 @@ export default function Signup() {
     return <Text>Loading</Text>;
   }
 
-  if (accessToken && refreshToken) {
-    return <Redirect href="/" />;
-    //router.replace("/login");
-  }
-
   const onSubmit = (data) => {
     signUp(data);
     navigation.navigate("(app)");
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Controller
-        control={control}
-        defaultValue={''}
-        render={({ field }) => (
-          <TextInput {...field} style={styles.input} placeholder="Username" />
-        )}
-        name="username"
-        rules={{ required: "You must enter your name or email" }}
-      />
-      <Controller
-        control={control}
-        defaultValue={''}
-        render={({ field }) => (
-          <TextInput {...field} style={styles.input} placeholder="Email" />
-        )}
-        name="email"
-        rules={{ required: "You must enter your email" }}
-      />
-      <Controller
-        control={control}
-        defaultValue={''}
-        render={({ field }) => (
-          <TextInput {...field} style={styles.input} placeholder="Password" />
-        )}
-        name="password"
-        rules={{ required: "You must enter your password" }}
-      />
-      <Button title="Sign up" onPress={handleSubmit(onSubmit)} />
-    </View>
+    <>
+      {accessToken && refreshToken ? (
+        <Redirect href="/" />
+      ) : (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Controller
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                style={styles.input}
+                placeholder="Username"
+              />
+            )}
+            name="username"
+            rules={{ required: "You must enter your name or email" }}
+          />
+          <Controller
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <TextInput {...field} style={styles.input} placeholder="Email" />
+            )}
+            name="email"
+            rules={{ required: "You must enter your email" }}
+          />
+          <Controller
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                style={styles.input}
+                placeholder="Password"
+              />
+            )}
+            name="password"
+            rules={{ required: "You must enter your password" }}
+          />
+          <Button title="Sign up" onPress={handleSubmit(onSubmit)} />
+        </View>
+      )}
+    </>
   );
 }
 

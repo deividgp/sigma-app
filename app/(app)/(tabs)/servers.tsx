@@ -20,9 +20,9 @@ export default function ServersScreen() {
       <View style={styles.titleContainer}>
         <ThemedText type="title">Servers</ThemedText>
         <Button
-            onPress={onPress}
-            title={isMembers ? "Channels list" : "Members list"}
-          />
+          onPress={onPress}
+          title={isMembers ? "Channels list" : "Members list"}
+        />
       </View>
       <View
         style={[
