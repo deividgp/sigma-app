@@ -16,6 +16,7 @@ import PendingList from "@/components/contacts/PendingList";
 import AddContact from "@/components/contacts/AddContact";
 import { useAuth } from "@/context/authContext";
 import { useUserStore } from "@/stores/userStore";
+import React from "react";
 
 export default function HomeScreen() {
   const [isPending, setIsPending] = useState(false);
@@ -44,7 +45,6 @@ export default function HomeScreen() {
       ) : (
         <>
           <View style={styles.titleContainer}>
-            <ThemedText type="title">Contacts</ThemedText>
             <Button
               onPress={onPress}
               title={isPending ? "Contacts list" : "Pending list"}

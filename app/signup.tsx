@@ -25,8 +25,13 @@ export default function Signup() {
   }
 
   const onSubmit = (data) => {
-    signUp(data);
-    navigation.navigate("(app)");
+    signUp(data)
+      .then(() => {
+        navigation.navigate("(tabs)");
+      })
+      .catch(() => {
+        console.log("Invalid credentials");
+      });
   };
 
   return (
@@ -34,27 +39,33 @@ export default function Signup() {
       {accessToken && refreshToken ? (
         <Redirect href="/" />
       ) : (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <View style={styles.container}>
           <Controller
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                {...field}
                 style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
                 placeholder="Username"
               />
             )}
             name="username"
-            rules={{ required: "You must enter your name or email" }}
+            rules={{ required: "You must enter your username" }}
           />
           <Controller
             control={control}
             defaultValue={""}
-            render={({ field }) => (
-              <TextInput {...field} style={styles.input} placeholder="Email" />
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Email"
+              />
             )}
             name="email"
             rules={{ required: "You must enter your email" }}
@@ -62,10 +73,12 @@ export default function Signup() {
           <Controller
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                {...field}
                 style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
                 placeholder="Password"
               />
             )}
@@ -81,7 +94,10 @@ export default function Signup() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
   },
   input: {
     height: 40,

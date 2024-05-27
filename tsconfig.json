@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "helpers/axios.js", "context/userContext.js", "services/UserService.js"  ]
+, "helpers/axios.js", "context/userContext.jsx", "services/UserService.js"  ]
 }

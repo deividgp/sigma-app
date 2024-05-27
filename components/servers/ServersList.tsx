@@ -12,7 +12,7 @@ export default function ServersList() {
   return (
     <>
       {user.servers.map((server) => {
-        <ServerItem server={server} />;
+        return <ServerItem server={server} />;
       })}
     </>
   );

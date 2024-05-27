@@ -17,6 +17,10 @@ export function useUser() {
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
+  const addContact = (contact) => {
+    setUser(...user, [...user.contacts, contact])
+  };
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

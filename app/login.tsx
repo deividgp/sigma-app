@@ -24,9 +24,14 @@ export default function Login() {
     return <Text>Loading</Text>;
   }
 
-  const onSubmit = (data) => {
-    logIn(data);
-    navigation.navigate("(app)");
+  const onSubmit = async (data) => {
+    logIn(data)
+      .then(() => {
+        navigation.navigate("(tabs)");
+      })
+      .catch(() => {
+        console.log("Invalid credentials");
+      });
   };
 
   return (
@@ -34,16 +39,16 @@ export default function Login() {
       {accessToken && refreshToken ? (
         <Redirect href="/" />
       ) : (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <View style={styles.container}>
           <Controller
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                {...field}
                 style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
                 placeholder="Username or email"
               />
             )}
@@ -53,10 +58,12 @@ export default function Login() {
           <Controller
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                {...field}
                 style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
                 placeholder="Password"
               />
             )}
@@ -76,7 +83,10 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
   },
   input: {
     height: 40,

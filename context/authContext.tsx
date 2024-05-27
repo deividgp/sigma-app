@@ -3,8 +3,8 @@ import { useStorageState } from "../hooks/useStorageState";
 import axios from "axios";
 
 const AuthContext = React.createContext<{
-  logIn: (data: LoginCredentials) => void;
-  signUp: (data: SignupCredentials) => void;
+  logIn: (data: LoginCredentials) => Promise<unknown>;
+  signUp: (data: SignupCredentials) => Promise<unknown>;
   logOut: () => void;
   accessToken?: string | null;
   refreshToken?: string | null;
@@ -57,27 +57,30 @@ export function AuthProvider(props: React.PropsWithChildren) {
     data: LoginCredentials | SignupCredentials,
     type: string
   ) => {
-    try {
-      const response = await axios.post(
-        process.env.EXPO_PUBLIC_SECURITY_URL + type,
-        data
-      );
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.post(
+          process.env.EXPO_PUBLIC_SECURITY_API_URL + type,
+          data
+        );
 
-      setAccessToken(response.data.accessToken);
-      setRefreshToken(response.data.refreshToken);
-    } catch (error) {
-      console.error(error);
-    }
+        setAccessToken(response.data.accessToken);
+        setRefreshToken(response.data.refreshToken);
+        resolve(true);
+      } catch {
+        reject();
+      }
+    });
   };
 
   return (
     <AuthContext.Provider
       value={{
         logIn: async (data) => {
-          await postCredentials(data, "LogIn");
+          return await postCredentials(data, "LogIn");
         },
         signUp: async (data) => {
-          await postCredentials(data, "SignUp");
+          return await postCredentials(data, "SignUp");
         },
         logOut: () => {
           setAccessToken(null);

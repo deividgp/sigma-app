@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, StyleSheet, View, Text } from "react-native";
 import PendingItem from "./PendingItem";
 import { useUserStore } from "@/stores/userStore";
@@ -13,7 +13,7 @@ export default function PendingList() {
   return (
     <>
       {user.pending.map((pending) => {
-        <PendingItem pending={pending} />;
+        return <PendingItem pending={pending} key={pending.id} />;
       })}
     </>
   );

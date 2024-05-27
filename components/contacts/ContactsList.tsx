@@ -13,7 +13,7 @@ export function ContactsList() {
   return (
     <>
       {user.contacts.map((contact) => {
-        <ContactItem contact={contact} />;
+        return <ContactItem contact={contact} key={contact.id} />;
       })}
     </>
   );

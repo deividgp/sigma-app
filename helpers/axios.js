@@ -42,7 +42,7 @@ const refreshAccessToken = async () => {
   let token;
 
   axios
-    .post(process.env.EXPO_PUBLIC_SECURITY_URL + "RefreshToken", refreshToken, {
+    .post(process.env.EXPO_PUBLIC_SECURITY_API_URL + "RefreshToken", refreshToken, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         Accept: "application/json",
