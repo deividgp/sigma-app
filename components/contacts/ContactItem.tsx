@@ -24,7 +24,14 @@ export default function ContactItem({ contact }) {
 
   return (
     <View style={styles.itemContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('contactChat', { conversationId: contact.conversationId, contactUsername: contact.username })}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("channelChat", {
+            conversationId: contact.conversationId,
+            contactUsername: contact.username,
+          })
+        }
+      >
         <Text style={styles.title}>{contact.username}</Text>
       </TouchableOpacity>
       <Button onPress={removeContact} title="Remove" />

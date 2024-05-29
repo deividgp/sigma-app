@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { getUser } from "@/services/UserService";
 
 type UserStore = {
   user: User | null;
@@ -8,6 +7,8 @@ type UserStore = {
   removeContact: (id: string) => void;
   addPending: (pending: PartialUser) => void;
   removePending: (id: string) => void;
+  addServer: (server: PartialServer) => void;
+  removeServer: (id: string) => void;
 };
 
 type User = {
@@ -88,6 +89,22 @@ export const useUserStore = create<UserStore>((set) => ({
       user: {
         ...state.user!,
         pending: state.user!.pending.filter((c) => c.id !== id),
+      },
+    }));
+  },
+  addServer: (server: PartialServer) => {
+    set((state) => ({
+      user: {
+        ...state.user!,
+        servers: [...state.user!.servers, server],
+      },
+    }));
+  },
+  removeServer: (id: string) => {
+    set((state) => ({
+      user: {
+        ...state.user!,
+        servers: state.user!.servers.filter((c) => c.id !== id),
       },
     }));
   },

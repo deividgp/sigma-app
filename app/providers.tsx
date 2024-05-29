@@ -1,6 +1,6 @@
 import React from "react";
-import { AuthProvider, useAuth } from "@/context/authContext";
-import { SignalProvider, useSignal } from "@/context/signalContext";
+import { AuthProvider } from "@/context/authContext";
+import { SignalProvider } from "@/context/signalContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Providers({ children }) {

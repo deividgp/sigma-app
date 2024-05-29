@@ -2,18 +2,13 @@ import { useNavigation } from "expo-router";
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function ChannelItem({ title, description }) {
+export default function ChannelItem({ channel }) {
   const navigation = useNavigation();
-
-  const handlePress = () => {
-    navigation.navigate("hola");
-  };
 
   return (
     <View style={styles.itemContainer}>
-      <TouchableOpacity onPress={() => handlePress()}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('channelChat', { channelId: channel.id, channelName: channel.name })}>
+        <Text style={styles.title}>{channel.name}</Text>
       </TouchableOpacity>
     </View>
   );

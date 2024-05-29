@@ -8,14 +8,13 @@ import MessageForm from "@/components/chat/MessageForm";
 import { ThemedText } from "@/components/ThemedText";
 import { useAuth } from "@/context/authContext";
 import axiosApiInstance from "@/helpers/axios";
-import { useFocusEffect } from "@react-navigation/native";
 import MessageItem from "@/components/chat/MessageItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function ContactChat() {
+export default function ChannelChat() {
   const { accessToken, refreshToken } = useAuth();
   const { user } = useUserStore();
-  const { connection } = useSignal();
+  const { serverConnection } = useSignal();
   const navigation = useNavigation();
   const params = useLocalSearchParams();
   const scrollViewRef = useRef(null);
@@ -24,9 +23,9 @@ export default function ContactChat() {
   useEffect(() => {
     axiosApiInstance
       .get(
-        process.env.EXPO_PUBLIC_CONVERSATION_API_URL +
-          "Get?conversationId=" +
-          params.conversationId
+        process.env.EXPO_PUBLIC_CHANNEL_API_URL +
+          "Get?channelId=" +
+          params.channelId
       )
       .then(async (r) => {
         setMessages(r.data.messages);
@@ -38,23 +37,26 @@ export default function ContactChat() {
   }, []);
 
   useEffect(() => {
-    if (!connection) return;
+    if (!serverConnection) return;
 
-    connection.send("JoinConversation", params.conversationId);
+    serverConnection.send("JoinChannel", params.channelId);
 
-    connection.on("ReceiveConversationMessage", (data) => {
+    serverConnection.on("ReceiveChannelMessage", (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
     });
     return () => {
-      connection.send("LeaveConversation", params.conversationId);
-      connection.off("ReceiveConversationMessage");
+      serverConnection.send("LeaveChannel", params.channelId);
+      serverConnection.off("ReceiveChannelMessage");
     };
-  }, [connection]);
+  }, [serverConnection]);
 
   const onSubmitMesssage = (data) => {
-    connection.send("SendMessage", {
-      conversationId: params.conversationId,
-      senderId: user?.id,
+    serverConnection.send("SendMessage", {
+      channelId: params.channelId,
+      sender: {
+        id: user?.id,
+        username: user?.username,
+      },
       content: data.message,
     });
   };
@@ -66,7 +68,7 @@ export default function ContactChat() {
       ) : (
         <SafeAreaView style={styles.container}>
           <View style={styles.titleContainer}>
-            <ThemedText type="title">{params.contactUsername}</ThemedText>
+            <ThemedText type="title">{params.channelName}</ThemedText>
           </View>
           <View style={styles.container}>
             <ScrollView
@@ -80,11 +82,7 @@ export default function ContactChat() {
                 messages.map((message) => {
                   return (
                     <MessageItem
-                      username={
-                        message.senderId == user?.id
-                          ? user?.username
-                          : params.contactUsername
-                      }
+                      username={message.sender.username}
                       message={message}
                       key={message.id}
                     ></MessageItem>

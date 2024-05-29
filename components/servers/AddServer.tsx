@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Button, TextInput } from "react-native";
 import { Controller, useForm } from "react-hook-form";
-import useSignalR from "@/hooks/useSignalR";
-import { useAuth } from "@/context/authContext";
 import { useUserStore } from "@/stores/userStore";
 import { useSignal } from "@/context/signalContext";
 
-export default function AddContact() {
+export default function AddServer() {
   const {
     control,
     handleSubmit,
@@ -14,20 +12,37 @@ export default function AddContact() {
     reset,
   } = useForm();
   const { user } = useUserStore();
-  const { connection } = useSignal();
+  const { serverConnection } = useSignal();
 
-  const onSubmit = (data) => {
-    if (data.username == '') return;
+  const onSubmitCreate = (data) => {
+    if (data.servername == '') return;
 
-    connection
-      .invoke("SendContactRequest", {
-        userId: user?.id,
-        username: user?.username,
-        targetUsername: data.username,
+    serverConnection
+      .invoke("SendCreateServer", {
+        OwnerId: user?.id,
+        OwnerUsername: user?.username,
+        ServerName: data.servername,
       })
       .then((r: boolean) => {
-        if (!r) {
-          console.error("User does not exist");
+        if (r) {
+          console.log("Success");
+        }
+        reset();
+      });
+  };
+
+  const onSubmitJoin = (data) => {
+    if (data.servername == '') return;
+    
+    serverConnection
+      .invoke("SendAddMember", {
+        UserId: user?.id,
+        Username: user?.username,
+        ServerName: data.servername,
+      })
+      .then((r: boolean) => {
+        if (r) {
+          console.log("Success");
         }
         reset();
       });
@@ -44,13 +59,13 @@ export default function AddContact() {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            placeholder="Username"
+            placeholder="Server"
           />
         )}
-        name="username"
-        rules={{ required: "You must enter the contact's username" }}
+        name="servername"
       />
-      <Button title="Send request" onPress={handleSubmit(onSubmit)} />
+      <Button title="Create" onPress={handleSubmit(onSubmitCreate)} />
+      <Button title="Join" onPress={handleSubmit(onSubmitJoin)} />
     </>
   );
 }

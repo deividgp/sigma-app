@@ -1,11 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export default function MemberItem({ title, description }) {
+export default function MemberItem({ member }) {
   return (
     <View style={styles.itemContainer}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.description}>{description}</Text>
+      <Text style={styles.title}>{member.username}</Text>
     </View>
   );
 }

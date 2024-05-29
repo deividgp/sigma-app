@@ -1,36 +1,22 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Button, TextInput } from "react-native";
 import { Controller, useForm } from "react-hook-form";
-import useSignalR from "@/hooks/useSignalR";
-import { useAuth } from "@/context/authContext";
 import { useUserStore } from "@/stores/userStore";
 import { useSignal } from "@/context/signalContext";
 
-export default function AddContact() {
+export default function AddChannel({onSubmitAddChannel}) {
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm();
-  const { user } = useUserStore();
-  const { connection } = useSignal();
 
   const onSubmit = (data) => {
-    if (data.username == '') return;
+    if (data.channel == '') return;
 
-    connection
-      .invoke("SendContactRequest", {
-        userId: user?.id,
-        username: user?.username,
-        targetUsername: data.username,
-      })
-      .then((r: boolean) => {
-        if (!r) {
-          console.error("User does not exist");
-        }
-        reset();
-      });
+    onSubmitAddChannel(data);
+    reset();
   };
 
   return (
@@ -44,13 +30,13 @@ export default function AddContact() {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            placeholder="Username"
+            placeholder="Channel"
           />
         )}
-        name="username"
+        name="channel"
         rules={{ required: "You must enter the contact's username" }}
       />
-      <Button title="Send request" onPress={handleSubmit(onSubmit)} />
+      <Button title="Create" onPress={handleSubmit(onSubmit)} />
     </>
   );
 }

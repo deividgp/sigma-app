@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import ContactItem from "./ContactItem";
 import { useUserStore } from "@/stores/userStore";
 

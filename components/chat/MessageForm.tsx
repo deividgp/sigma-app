@@ -11,6 +11,7 @@ export default function MessageForm({ onSubmitMessage }) {
   } = useForm();
 
   const onSubmit = (data) => {
+    if (data.message == '') return;
     onSubmitMessage(data);
     reset();
   };

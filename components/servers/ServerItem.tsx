@@ -1,14 +1,13 @@
 import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export default function ServerItem({ server }) {
-  const handlePress = () => {};
+export default function ServerItem({ server, onPress }) {
 
   return (
-    <TouchableOpacity onPress={() => handlePress()}>
+    <TouchableOpacity onPress={onPress}>
       {server.icon ? (
         <Image
           source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
+          style={styles.logo}
         />
       ) : (
         <Text>{server.name}</Text>
@@ -18,7 +17,7 @@ export default function ServerItem({ server }) {
 }
 
 const styles = StyleSheet.create({
-  reactLogo: {
+  logo: {
     height: 100,
     width: 100,
     bottom: 0,

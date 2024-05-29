@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FlatList, StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import PendingItem from "./PendingItem";
 import { useUserStore } from "@/stores/userStore";
 

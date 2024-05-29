@@ -25,9 +25,12 @@ export default function AppLayout() {
     removeContact,
     addPending,
     removePending,
+    addServer,
+    removeServer,
   } = useUserStore();
   const navigation = useNavigation();
-  const { setConnection, connected, setConnected } = useSignal();
+  const { setConnection, setServerConnection, connected, setConnected } =
+    useSignal();
 
   useEffect(() => {
     getUser()
@@ -46,6 +49,11 @@ export default function AppLayout() {
     try {
       const connection = createSignalRConnection(
         process.env.EXPO_PUBLIC_USER_CONVERSATION_HUB_URL!,
+        accessToken
+      );
+
+      const serverConnection = createSignalRConnection(
+        process.env.EXPO_PUBLIC_SERVER_CHANNEL_HUB_URL!,
         accessToken
       );
 
@@ -68,11 +76,43 @@ export default function AppLayout() {
           connection.on("ReceiveRemoveContact", (data) => {
             removeContact(data.targetUserId);
           });
-
+          connection.on("ReceiveJoinServer", (data) => {
+            console.log("holahola");
+            addServer(data);
+          });
           setConnection(connection);
           setConnected(true);
+
+          serverConnection
+            ?.start()
+            .then(() => {
+              serverConnection.on("ReceiveCreateServer", (data) => {
+                connection.invoke("SendJoinServer", {
+                  UserId: data.userId,
+                  ServerId: data.id,
+                  ServerName: data.name,
+                  Icon: data.icon,
+                });
+              });
+
+              serverConnection.on("ReceiveAddMember", (data) => {
+                console.log(data);
+                connection.invoke("SendJoinServer", {
+                  UserId: data.userId,
+                  ServerId: data.id,
+                  ServerName: data.name,
+                  Icon: data.icon,
+                });
+              });
+
+              setServerConnection(serverConnection);
+              setConnected(true);
+            })
+            .catch((error) =>
+              console.log("Server hub connection failed: ", error)
+            );
         })
-        .catch((error) => console.log("Connection failed: ", error));
+        .catch((error) => console.log("User hub connection failed: ", error));
     } catch (e) {
       console.error(e);
     }
@@ -129,6 +169,14 @@ export default function AppLayout() {
           />
           <Tabs.Screen
             name="contactChat"
+            options={{
+              tabBarButton: () => null,
+              tabBarStyle: { display: "none" },
+              headerShown: false,
+            }}
+          />
+          <Tabs.Screen
+            name="channelChat"
             options={{
               tabBarButton: () => null,
               tabBarStyle: { display: "none" },

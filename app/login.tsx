@@ -25,6 +25,8 @@ export default function Login() {
   }
 
   const onSubmit = async (data) => {
+    if (data.usernameEmail == "" || data.password == "") return;
+
     logIn(data)
       .then(() => {
         navigation.navigate("(tabs)");

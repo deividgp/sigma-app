@@ -25,6 +25,8 @@ export default function Signup() {
   }
 
   const onSubmit = (data) => {
+    if (data.username == "" || data.email == "" || data.password == "") return;
+
     signUp(data)
       .then(() => {
         navigation.navigate("(tabs)");

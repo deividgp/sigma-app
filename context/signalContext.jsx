@@ -15,10 +15,11 @@ export function useSignal() {
 
 const SignalProvider = ({ children }) => {
   const [connection, setConnection] = useState(null);
+  const [serverConnection, setServerConnection] = useState(null);
   const [connected, setConnected] = useState(false);
 
   return (
-    <SignalContext.Provider value={{ connection, setConnection, connected, setConnected }}>
+    <SignalContext.Provider value={{ connection, setConnection, serverConnection, setServerConnection, connected, setConnected }}>
       {children}
     </SignalContext.Provider>
   );

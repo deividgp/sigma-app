@@ -1,18 +1,64 @@
-import { StyleSheet, Image, Platform, Button, View } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  Platform,
+  Button,
+  View,
+  TouchableOpacity,
+} from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { useNavigation } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
-import ServersList from "@/components/servers/ServersList";
 import { ChannelsList } from "@/components/servers/ChannelsList";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MembersList } from "@/components/servers/MembersList";
+import { useUserStore } from "@/stores/userStore";
+import ServerItem from "@/components/servers/ServerItem";
+import { getServer } from "@/services/ServerService";
+import { Ionicons } from "@expo/vector-icons";
+import AddServer from "@/components/servers/AddServer";
+import AddChannel from "@/components/servers/AddChannel";
+import { useSignal } from "@/context/signalContext";
 
 export default function ServersScreen() {
   const [isMembers, setIsMembers] = useState(false);
+  const [server, setServer] = useState(null);
+  const { user } = useUserStore();
+  const { serverConnection } = useSignal();
 
   const onPress = () => {
     setIsMembers(!isMembers);
+  };
+
+  const serverOnPress = (serverId) => {
+    getServer(serverId)
+      .then((r) => {
+        setServer(r.data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  useEffect(() => {
+    if (server == null) return;
+    
+    serverConnection.on("ReceiveChannelCreate", (data) => {
+      console.log(data);
+      setServer((prevServer) => [...prevServer.channels, data]);
+    });
+
+    return () => {
+      serverConnection.off("ReceiveChannelCreate");
+    };
+  }, [server]);
+
+  const onSubmitAddChannel = (data) => {
+    serverConnection.send("SendCreateChannel", {
+      serverId: server?.id,
+      channelName: data.channel,
+    });
   };
 
   return (
@@ -22,6 +68,10 @@ export default function ServersScreen() {
           onPress={onPress}
           title={isMembers ? "Channels list" : "Members list"}
         />
+        <AddServer></AddServer>
+        {server != null && (
+          <AddChannel onSubmitAddChannel={onSubmitAddChannel}></AddChannel>
+        )}
       </View>
       <View
         style={[
@@ -31,14 +81,37 @@ export default function ServersScreen() {
           },
         ]}
       >
-        <ScrollView style={{ maxWidth: 100 }}>
-          <ServersList />
+        <ScrollView
+          style={{
+            maxWidth: 100,
+            borderRightWidth: 1,
+            backgroundColor: "lightblue",
+          }}
+        >
+          {/*<TouchableOpacity>
+            <Ionicons name="add-circle-outline" size={100} color="black" />
+      </TouchableOpacity>*/}
+          {user?.servers.map((server) => {
+            return (
+              <ServerItem
+                key={server.id}
+                server={server}
+                onPress={() => {
+                  serverOnPress(server.id);
+                }}
+              />
+            );
+          })}
         </ScrollView>
         <ScrollView style={{ flex: 1 }}>
-          {isMembers ? (
-            <MembersList></MembersList>
-          ) : (
-            <ChannelsList></ChannelsList>
+          {server != null && (
+            <>
+              {isMembers ? (
+                <MembersList members={server.members}></MembersList>
+              ) : (
+                <ChannelsList channels={server.channels}></ChannelsList>
+              )}
+            </>
           )}
         </ScrollView>
       </View>
