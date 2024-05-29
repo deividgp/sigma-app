@@ -1,5 +1,6 @@
 import { useSignal } from "@/context/signalContext";
 import { useUserStore } from "@/stores/userStore";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import React from "react";
 import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
@@ -24,17 +25,21 @@ export default function ContactItem({ contact }) {
 
   return (
     <View style={styles.itemContainer}>
+      <Text style={styles.title}>{contact.username}</Text>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("channelChat", {
+          navigation.navigate("contactChat", {
             conversationId: contact.conversationId,
             contactUsername: contact.username,
           })
         }
       >
-        <Text style={styles.title}>{contact.username}</Text>
+        <Ionicons name="chatbox-outline" size={50} color="black" />
       </TouchableOpacity>
-      <Button onPress={removeContact} title="Remove" />
+      <TouchableOpacity onPress={removeContact}>
+        <Ionicons name="person-remove-outline" size={50} color="black" />
+      </TouchableOpacity>
+      {/*<Button onPress={removeContact} title="Remove" />*/}
     </View>
   );
 }

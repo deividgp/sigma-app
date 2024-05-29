@@ -132,7 +132,7 @@ export default function AppLayout() {
               title: "Contacts",
               tabBarIcon: ({ color, focused }) => (
                 <TabBarIcon
-                  name={focused ? "home" : "home-outline"}
+                  name={focused ? "people" : "people-outline"}
                   color={color}
                 />
               ),
@@ -156,7 +156,7 @@ export default function AppLayout() {
               title: "Profile",
               tabBarIcon: ({ color, focused }) => (
                 <TabBarIcon
-                  name={focused ? "home" : "home-outline"}
+                  name={focused ? "person" : "person-outline"}
                   color={color}
                 />
               ),
