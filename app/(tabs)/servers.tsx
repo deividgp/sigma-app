@@ -20,6 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 import AddServer from "@/components/servers/AddServer";
 import AddChannel from "@/components/servers/AddChannel";
 import { useSignal } from "@/context/signalContext";
+import { produce } from "immer";
 
 export default function ServersScreen() {
   const [isMembers, setIsMembers] = useState(false);
@@ -43,10 +44,13 @@ export default function ServersScreen() {
 
   useEffect(() => {
     if (server == null) return;
-    
+
     serverConnection.on("ReceiveChannelCreate", (data) => {
-      console.log(data);
-      setServer((prevServer) => [...prevServer.channels, data]);
+      setServer(
+        produce((draft) => {
+          draft!.channels.push(data);
+        })
+      );
     });
 
     return () => {
@@ -64,12 +68,14 @@ export default function ServersScreen() {
   return (
     <>
       <View style={styles.titleContainer}>
-        <Button
-          onPress={onPress}
-          title={isMembers ? "Channels list" : "Members list"}
-        />
         <AddServer></AddServer>
         {server != null && (
+          <Button
+            onPress={onPress}
+            title={isMembers ? "Channels list" : "Members list"}
+          />
+        )}
+        {server != null && server.ownerId == user.id && (
           <AddChannel onSubmitAddChannel={onSubmitAddChannel}></AddChannel>
         )}
       </View>

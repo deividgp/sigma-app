@@ -32,7 +32,7 @@ export default function Login() {
         navigation.navigate("(tabs)");
       })
       .catch(() => {
-        console.log("Invalid credentials");
+        console.error("Invalid credentials");
       });
   };
 
@@ -67,6 +67,7 @@ export default function Login() {
                 onChangeText={onChange}
                 value={value}
                 placeholder="Password"
+                secureTextEntry={true}
               />
             )}
             name="password"

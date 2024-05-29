@@ -77,7 +77,6 @@ export default function AppLayout() {
             removeContact(data.targetUserId);
           });
           connection.on("ReceiveJoinServer", (data) => {
-            console.log("holahola");
             addServer(data);
           });
           setConnection(connection);
@@ -96,7 +95,6 @@ export default function AppLayout() {
               });
 
               serverConnection.on("ReceiveAddMember", (data) => {
-                console.log(data);
                 connection.invoke("SendJoinServer", {
                   UserId: data.userId,
                   ServerId: data.id,
@@ -116,9 +114,6 @@ export default function AppLayout() {
     } catch (e) {
       console.error(e);
     }
-    /*return () => {
-      connection?.stop().then(() => console.log("SignalR Disconnected."));
-    };*/
   }, [accessToken]);
 
   return (
