@@ -76,7 +76,7 @@ export default function ContactChat() {
               }
               style={{ flex: 1 }}
             >
-              {messages.length !== 0 ? (
+              {messages.length !== 0 &&
                 messages.map((message) => {
                   return (
                     <MessageItem
@@ -89,10 +89,7 @@ export default function ContactChat() {
                       key={message.id}
                     ></MessageItem>
                   );
-                })
-              ) : (
-                <Text></Text>
-              )}
+                })}
             </ScrollView>
             <MessageForm onSubmitMessage={onSubmitMesssage} />
           </View>

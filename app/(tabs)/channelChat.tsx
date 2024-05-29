@@ -78,7 +78,7 @@ export default function ChannelChat() {
               }
               style={{ flex: 1 }}
             >
-              {messages.length !== 0 ? (
+              {messages.length !== 0 &&
                 messages.map((message) => {
                   return (
                     <MessageItem
@@ -87,10 +87,7 @@ export default function ChannelChat() {
                       key={message.id}
                     ></MessageItem>
                   );
-                })
-              ) : (
-                <Text></Text>
-              )}
+                })}
             </ScrollView>
             <MessageForm onSubmitMessage={onSubmitMesssage} />
           </View>
