@@ -75,10 +75,12 @@ export default function ServersScreen() {
             title={isMembers ? "Channels list" : "Members list"}
           />
         )}
-        {server != null && server.ownerId == user.id && (
-          <AddChannel onSubmitAddChannel={onSubmitAddChannel}></AddChannel>
-        )}
       </View>
+      {server != null && server.ownerId == user.id && (
+        <View style={styles.titleContainer}>
+          <AddChannel onSubmitAddChannel={onSubmitAddChannel}></AddChannel>
+        </View>
+      )}
       <View
         style={[
           styles.container,
@@ -129,6 +131,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     gap: 8,
+    alignItems: "center",
   },
   container: {
     flex: 1,
