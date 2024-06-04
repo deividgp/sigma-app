@@ -5,10 +5,11 @@ import {
   Button,
   View,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
-import { useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
 import { ChannelsList } from "@/components/servers/ChannelsList";
 import React, { useEffect, useState } from "react";
@@ -21,26 +22,29 @@ import AddServer from "@/components/servers/AddServer";
 import AddChannel from "@/components/servers/AddChannel";
 import { useSignal } from "@/context/signalContext";
 import { produce } from "immer";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ServersScreen() {
   const [isMembers, setIsMembers] = useState(false);
   const [server, setServer] = useState(null);
   const { user } = useUserStore();
   const { serverConnection } = useSignal();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const params = useLocalSearchParams();
 
   const onPress = () => {
     setIsMembers(!isMembers);
   };
 
-  const serverOnPress = (serverId) => {
-    getServer(serverId)
+  useEffect(() => {
+    getServer(params.serverId)
       .then((r) => {
         setServer(r.data);
       })
       .catch((e) => {
         console.error(e);
       });
-  };
+  }, [params.serverId]);
 
   useEffect(() => {
     if (server == null) return;
@@ -66,9 +70,14 @@ export default function ServersScreen() {
   };
 
   return (
-    <>
+    <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
-        <AddServer></AddServer>
+        <ThemedText type="title">{server?.name}</ThemedText>
+        {server != null && server.ownerId == user.id && (
+          <Button onPress={() => setIsModalVisible(true)} title="New channel" />
+        )}
+      </View>
+      <View style={styles.titleContainer}>
         {server != null && (
           <Button
             onPress={onPress}
@@ -76,54 +85,35 @@ export default function ServersScreen() {
           />
         )}
       </View>
-      {server != null && server.ownerId == user.id && (
-        <View style={styles.titleContainer}>
-          <AddChannel onSubmitAddChannel={onSubmitAddChannel}></AddChannel>
-        </View>
-      )}
-      <View
-        style={[
-          styles.container,
-          {
-            flexDirection: "row",
-          },
-        ]}
+      <ScrollView style={{ flex: 1 }}>
+        {server != null && (
+          <>
+            {isMembers ? (
+              <MembersList members={server.members}></MembersList>
+            ) : (
+              <ChannelsList channels={server.channels}></ChannelsList>
+            )}
+          </>
+        )}
+      </ScrollView>
+      <Modal
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+        transparent={false}
+        animationType="slide"
       >
-        <ScrollView
+        <View
           style={{
-            maxWidth: 100,
-            borderRightWidth: 1,
-            backgroundColor: "lightblue",
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          {/*<TouchableOpacity>
-            <Ionicons name="add-circle-outline" size={100} color="black" />
-      </TouchableOpacity>*/}
-          {user?.servers.map((server) => {
-            return (
-              <ServerItem
-                key={server.id}
-                server={server}
-                onPress={() => {
-                  serverOnPress(server.id);
-                }}
-              />
-            );
-          })}
-        </ScrollView>
-        <ScrollView style={{ flex: 1 }}>
-          {server != null && (
-            <>
-              {isMembers ? (
-                <MembersList members={server.members}></MembersList>
-              ) : (
-                <ChannelsList channels={server.channels}></ChannelsList>
-              )}
-            </>
-          )}
-        </ScrollView>
-      </View>
-    </>
+          <AddChannel onSubmitAddChannel={onSubmitAddChannel} />
+        </View>
+      </Modal>
+    </SafeAreaView>
   );
 }
 
@@ -134,6 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container: {
+    flexDirection: "column",
     flex: 1,
   },
   button: {

@@ -1,4 +1,5 @@
 import { Tabs, useFocusEffect } from "expo-router";
+import { Drawer } from "expo-router/drawer";
 import React, { useState } from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Redirect, Slot, Stack, router, useNavigation } from "expo-router";
@@ -8,6 +9,7 @@ import { useUserStore } from "@/stores/userStore";
 import createSignalRConnection from "@/helpers/createSignalRConnection";
 import { useSignal } from "@/context/signalContext";
 import { getUser } from "@/services/UserService";
+import CustomDrawerContent from "@/components/CustomDrawerContent";
 
 export default function AppLayout() {
   const {
@@ -121,64 +123,55 @@ export default function AppLayout() {
       {!accessToken && !refreshToken ? (
         <Redirect href="/login" />
       ) : (
-        <Tabs
+        <Drawer
+          drawerContent={CustomDrawerContent}
           screenOptions={{
-            headerShown: true,
+            drawerType: "front",
+            drawerStyle: {
+              width: 75,
+            },
+            drawerItemStyle: {
+              marginLeft: 0,
+              marginRight: 0,
+            },
           }}
         >
-          <Tabs.Screen
+          <Drawer.Screen
             name="index"
             options={{
               title: "Contacts",
-              tabBarIcon: ({ color, focused }) => (
-                <TabBarIcon
-                  name={focused ? "people" : "people-outline"}
-                  color={color}
-                />
-              ),
+              drawerLabel: "Contacts",
             }}
-          />
-          <Tabs.Screen
-            name="servers"
-            options={{
-              title: "Servers",
-              tabBarIcon: ({ color, focused }) => (
-                <TabBarIcon
-                  name={focused ? "home" : "home-outline"}
-                  color={color}
-                />
-              ),
-            }}
-          />
-          <Tabs.Screen
+          ></Drawer.Screen>
+          <Drawer.Screen
             name="profile"
             options={{
               title: "Profile",
-              tabBarIcon: ({ color, focused }) => (
-                <TabBarIcon
-                  name={focused ? "person" : "person-outline"}
-                  color={color}
-                />
-              ),
+              drawerLabel: "Profile",
             }}
-          />
-          <Tabs.Screen
-            name="contactChat"
-            options={{
-              tabBarButton: () => null,
-              tabBarStyle: { display: "none" },
-              headerShown: false,
-            }}
-          />
-          <Tabs.Screen
+          ></Drawer.Screen>
+          <Drawer.Screen
             name="channelChat"
             options={{
-              tabBarButton: () => null,
-              tabBarStyle: { display: "none" },
               headerShown: false,
+              drawerItemStyle: { display: "none" },
             }}
-          />
-        </Tabs>
+          ></Drawer.Screen>
+          <Drawer.Screen
+            name="servers"
+            options={{
+              headerShown: false,
+              drawerItemStyle: { display: "none" },
+            }}
+          ></Drawer.Screen>
+          <Drawer.Screen
+            name="contactChat"
+            options={{
+              headerShown: false,
+              drawerItemStyle: { display: "none" },
+            }}
+          ></Drawer.Screen>
+        </Drawer>
       )}
     </>
   );
