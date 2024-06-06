@@ -1,0 +1,19 @@
+{
+    "login": "Iniciar sesión",
+    "signup": "Regístrate",
+    "password": "Contraseña",
+    "send": "Enviar",
+    "logout": "Cerrar sesión",
+    "create": "Crear",
+    "remove": "Eliminar",
+    "accept": "Aceptar",
+    "join": "Unirse",
+    "sendRequest": "Enviar petición",
+    "serverSettings": "Opciones del servidor",
+    "loading": "Cargando",
+    "channel": "Canal",
+    "server": "Servidor",
+    "contacts": "Contactos",
+    "username": "Nombre de usuario",
+    "pending": "Pendiente"
+}

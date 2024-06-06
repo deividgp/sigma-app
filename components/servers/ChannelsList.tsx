@@ -1,14 +1,14 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import ChannelItem from "./ChannelItem";
 
 export function ChannelsList({channels}) {
   return (
-    <>
+    <ScrollView style={{ flex: 1 }}>
       {channels.map((channel) => {
         return <ChannelItem key={channel.id} channel={channel} />;
       })}
-    </>
+    </ScrollView>
   );
 }
 

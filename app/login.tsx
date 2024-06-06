@@ -1,9 +1,12 @@
 import React from "react";
 import { router, useNavigation } from "expo-router";
-import { Button, Text, View, TextInput, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { useAuth } from "../context/authContext";
 import { Controller, useForm } from "react-hook-form";
 import { Redirect, Stack } from "expo-router";
+import CustomButton from "@/components/CustomButton";
+import CustomTextInput from "@/components/CustomTextInput";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const {
@@ -19,9 +22,10 @@ export default function Login() {
     formState: { errors },
   } = useForm();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   if (isLoadingAccess || isLoadingRefresh) {
-    return <Text>Loading</Text>;
+    return <Text>{t("loading")}</Text>;
   }
 
   const onSubmit = async (data) => {
@@ -32,6 +36,7 @@ export default function Login() {
         navigation.navigate("(tabs)");
       })
       .catch(() => {
+        alert("Invalid credentials");
         console.error("Invalid credentials");
       });
   };
@@ -46,12 +51,12 @@ export default function Login() {
             control={control}
             defaultValue={""}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
+              <CustomTextInput
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholder="Username or email"
+                placeholder="Username / Email"
+                width={200}
               />
             )}
             name="usernameEmail"
@@ -61,21 +66,21 @@ export default function Login() {
             control={control}
             defaultValue={""}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
+              <CustomTextInput
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 placeholder="Password"
                 secureTextEntry={true}
+                width={200}
               />
             )}
             name="password"
             rules={{ required: "You must enter your password" }}
           />
-          <Button title="Log in" onPress={handleSubmit(onSubmit)} />
-          <Button
-            title="Sign up"
+          <CustomButton title={t("login")} onPress={handleSubmit(onSubmit)} />
+          <CustomButton
+            title={t("signup")}
             onPress={() => navigation.navigate("signup")}
           />
         </View>

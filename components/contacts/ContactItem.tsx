@@ -3,7 +3,7 @@ import { useUserStore } from "@/stores/userStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import React from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function ContactItem({ contact }) {
   const { user } = useUserStore();
@@ -39,14 +39,13 @@ export default function ContactItem({ contact }) {
       <TouchableOpacity onPress={removeContact}>
         <Ionicons name="person-remove-outline" size={50} color="black" />
       </TouchableOpacity>
-      {/*<Button onPress={removeContact} title="Remove" />*/}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   itemContainer: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#B04B2B",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

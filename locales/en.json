@@ -1,0 +1,19 @@
+{
+    "login": "Log in",
+    "signup": "Sign up",
+    "password": "Password",
+    "send": "Send",
+    "logout": "Log out",
+    "create": "Create",
+    "remove": "Remove",
+    "accept": "Accept",
+    "join": "Join",
+    "sendRequest": "Send request",
+    "serverSettings": "Server settings",
+    "loading": "Loading",
+    "channel": "Channel",
+    "server": "Server",
+    "contacts": "Contacts",
+    "username": "Username",
+    "pending": "Pending"
+}

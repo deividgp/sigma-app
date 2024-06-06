@@ -1,14 +1,14 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import MemberItem from "./MemberItem";
 
 export function MembersList({members}) {
   return (
-    <>
+    <ScrollView style={{ flex: 1 }}>
       {members.map((member) => {
         return <MemberItem key={member.id} member={member} />;
       })}
-    </>
+    </ScrollView>
   );
 }
 

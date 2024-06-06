@@ -1,0 +1,19 @@
+{
+    "login": "Iniciar sessió",
+    "signup": "Registra't",
+    "password": "Contrasenya",
+    "send": "Enviar",
+    "logout": "Tancar sessió",
+    "create": "Crear",
+    "remove": "Eliminar",
+    "accept": "Acceptar",
+    "join": "Unir-se",
+    "sendRequest": "Enviar petició",
+    "serverSettings": "Opcions del servidor",
+    "loading": "Carregant",
+    "channel": "Canal",
+    "server": "Servidor",
+    "contacts": "Contactes",
+    "username": "Nom d'usuari",
+    "pending": "Pendent"
+}

@@ -3,9 +3,8 @@ import {
   StyleSheet,
   Platform,
   View,
-  Button,
-  TextInput,
   Text,
+  useWindowDimensions,
 } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
@@ -17,10 +16,10 @@ import AddContact from "@/components/contacts/AddContact";
 import { useAuth } from "@/context/authContext";
 import { useUserStore } from "@/stores/userStore";
 import React from "react";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { useTranslation } from "react-i18next";
 
 export default function HomeScreen() {
-  const [isPending, setIsPending] = useState(false);
-
   const {
     accessToken,
     refreshToken,
@@ -29,49 +28,49 @@ export default function HomeScreen() {
     isLoadingAccess,
     isLoadingRefresh,
   } = useAuth();
-
-  const onPress = () => {
-    setIsPending(!isPending);
-  };
+  const { t } = useTranslation();
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "contacts", title: t("contacts") },
+    { key: "pending", title: "Pending" },
+  ]);
 
   if (isLoadingAccess || isLoadingRefresh) {
-    return <Text>Loading</Text>;
+    return <Text>{t("loading")}</Text>;
   }
+
+  const contactsRoute = () => <ContactsList />;
+
+  const pendingRoute = () => <PendingList />;
+
+  const renderScene = SceneMap({
+    contacts: contactsRoute,
+    pending: pendingRoute,
+  });
+
+  const renderTabBar = (props) => (
+    <TabBar
+      {...props}
+      indicatorStyle={{ backgroundColor: "orange" }}
+      style={{ backgroundColor: "#0A21EF" }}
+    />
+  );
+
+  const layout = useWindowDimensions();
 
   return (
     <>
       {isLoadingAccess || isLoadingRefresh ? (
-        <Text>Loading</Text>
+        <Text>{t("loading")}</Text>
       ) : (
-        <>
-          <View style={styles.titleContainer}>
-            <Button
-              onPress={onPress}
-              title={isPending ? "Contacts list" : "Pending list"}
-            />
-            <AddContact />
-          </View>
-          <ScrollView style={styles.stepContainer}>
-            {isPending ? (
-              <PendingList></PendingList>
-            ) : (
-              <ContactsList></ContactsList>
-            )}
-          </ScrollView>
-        </>
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+          renderTabBar={renderTabBar}
+        />
       )}
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-});

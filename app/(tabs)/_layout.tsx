@@ -10,6 +10,8 @@ import createSignalRConnection from "@/helpers/createSignalRConnection";
 import { useSignal } from "@/context/signalContext";
 import { getUser } from "@/services/UserService";
 import CustomDrawerContent from "@/components/CustomDrawerContent";
+import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 export default function AppLayout() {
   const {
@@ -30,7 +32,7 @@ export default function AppLayout() {
     addServer,
     removeServer,
   } = useUserStore();
-  const navigation = useNavigation();
+  const { t } = useTranslation();
   const { setConnection, setServerConnection, connected, setConnected } =
     useSignal();
 
@@ -128,19 +130,22 @@ export default function AppLayout() {
           screenOptions={{
             drawerType: "front",
             drawerStyle: {
-              width: 75,
-            },
-            drawerItemStyle: {
-              marginLeft: 0,
-              marginRight: 0,
+              width: 200,
             },
           }}
         >
           <Drawer.Screen
             name="index"
             options={{
-              title: "Contacts",
-              drawerLabel: "Contacts",
+              title: t("contacts"),
+              drawerLabel: t("contacts"),
+              drawerIcon: ({ focused, size }) => (
+                <Ionicons
+                  name="people-outline"
+                  size={size}
+                  color={focused ? "#7cc" : "#ccc"}
+                />
+              ),
             }}
           ></Drawer.Screen>
           <Drawer.Screen
@@ -148,6 +153,13 @@ export default function AppLayout() {
             options={{
               title: "Profile",
               drawerLabel: "Profile",
+              drawerIcon: ({ focused, size }) => (
+                <Ionicons
+                  name="person-outline"
+                  size={size}
+                  color={focused ? "#7cc" : "#ccc"}
+                />
+              ),
             }}
           ></Drawer.Screen>
           <Drawer.Screen

@@ -5,10 +5,11 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { useNavigation } from "expo-router";
-import { Text, Image, Modal, View } from "react-native";
+import { Text, Image, Modal, View, StyleSheet } from "react-native";
 import { TabBarIcon } from "./navigation/TabBarIcon";
 import { useState } from "react";
 import AddServer from "./servers/AddServer";
+import { ThemedText } from "./ThemedText";
 
 export default function CustomDrawerContent(props: any) {
   const { user } = useUserStore();
@@ -18,24 +19,36 @@ export default function CustomDrawerContent(props: any) {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      {user?.servers.map((server) => {
-        return (
-          <DrawerItem
-            label={server.name}
-            onPress={() =>
-              navigation.navigate("servers", {
-                serverId: server.id,
-              })
-            }
-            key={server.id}
-          ></DrawerItem>
-        );
-      })}
       <DrawerItem
-        label={() => null}
+        label={"Add server"}
         onPress={() => setIsModalVisible(true)}
-        icon={() => <TabBarIcon name={"add-circle-outline"} color={"black"} />}
+        icon={({ focused, size }) => (
+          <TabBarIcon
+            name={"add-circle-outline"}
+            size={size}
+            color={focused ? "#7cc" : "#ccc"}
+          />
+        )}
       ></DrawerItem>
+      {user != null && user.servers.length > 0 && (
+        <View style={styles.container}>
+          <ThemedText type="subtitle">Servers</ThemedText>
+        </View>
+      )}
+      {user != null &&
+        user.servers.map((server) => {
+          return (
+            <DrawerItem
+              label={server.name}
+              onPress={() =>
+                navigation.navigate("servers", {
+                  serverId: server.id,
+                })
+              }
+              key={server.id}
+            ></DrawerItem>
+          );
+        })}
       <Modal
         visible={isModalVisible}
         onRequestClose={() => setIsModalVisible(false)}
@@ -56,3 +69,11 @@ export default function CustomDrawerContent(props: any) {
     </DrawerContentScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

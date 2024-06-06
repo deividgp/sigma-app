@@ -2,10 +2,10 @@ import {
   StyleSheet,
   Image,
   Platform,
-  Button,
   View,
   TouchableOpacity,
   Modal,
+  useWindowDimensions,
 } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
@@ -18,23 +18,26 @@ import { useUserStore } from "@/stores/userStore";
 import ServerItem from "@/components/servers/ServerItem";
 import { getServer } from "@/services/ServerService";
 import { Ionicons } from "@expo/vector-icons";
-import AddServer from "@/components/servers/AddServer";
 import AddChannel from "@/components/servers/AddChannel";
 import { useSignal } from "@/context/signalContext";
 import { produce } from "immer";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import ServerSettings from "@/components/servers/ServerSettings";
+import { useServer } from "@/context/serverContext";
+import CustomButton from "@/components/CustomButton";
 
 export default function ServersScreen() {
-  const [isMembers, setIsMembers] = useState(false);
-  const [server, setServer] = useState(null);
+  const { server, setServer } = useServer();
   const { user } = useUserStore();
   const { serverConnection } = useSignal();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const params = useLocalSearchParams();
-
-  const onPress = () => {
-    setIsMembers(!isMembers);
-  };
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "channels", title: "Channels" },
+    { key: "members", title: "Members" },
+  ]);
 
   useEffect(() => {
     getServer(params.serverId)
@@ -57,62 +60,71 @@ export default function ServersScreen() {
       );
     });
 
+    serverConnection.on("ReceiveChannelDelete", (data) => {
+      setServer(
+        produce((draft) => {
+          const index = draft.channels.findIndex(
+            (item) => item.id === data.channelId
+          );
+          if (index !== -1) {
+            draft.channels.splice(index, 1);
+          }
+        })
+      );
+    });
+
     return () => {
       serverConnection.off("ReceiveChannelCreate");
     };
   }, [server]);
 
-  const onSubmitAddChannel = (data) => {
-    serverConnection.send("SendCreateChannel", {
-      serverId: server?.id,
-      channelName: data.channel,
-    });
-  };
+  const membersRoute = () => (
+    <MembersList members={server!.members}></MembersList>
+  );
+
+  const channelsRoute = () => (
+    <ChannelsList channels={server!.channels}></ChannelsList>
+  );
+
+  const renderScene = SceneMap({
+    channels: channelsRoute,
+    members: membersRoute,
+  });
+
+  const renderTabBar = (props) => (
+    <TabBar
+      {...props}
+      indicatorStyle={{ backgroundColor: "orange" }}
+      style={{ backgroundColor: "#0A21EF" }}
+    />
+  );
+
+  const layout = useWindowDimensions();
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
         <ThemedText type="title">{server?.name}</ThemedText>
         {server != null && server.ownerId == user.id && (
-          <Button onPress={() => setIsModalVisible(true)} title="New channel" />
-        )}
-      </View>
-      <View style={styles.titleContainer}>
-        {server != null && (
-          <Button
-            onPress={onPress}
-            title={isMembers ? "Channels list" : "Members list"}
+          <CustomButton
+            onPress={() => setIsSettingsModalVisible(true)}
+            title="Server settings"
           />
         )}
       </View>
-      <ScrollView style={{ flex: 1 }}>
-        {server != null && (
-          <>
-            {isMembers ? (
-              <MembersList members={server.members}></MembersList>
-            ) : (
-              <ChannelsList channels={server.channels}></ChannelsList>
-            )}
-          </>
-        )}
-      </ScrollView>
-      <Modal
-        visible={isModalVisible}
-        onRequestClose={() => setIsModalVisible(false)}
-        transparent={false}
-        animationType="slide"
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <AddChannel onSubmitAddChannel={onSubmitAddChannel} />
-        </View>
-      </Modal>
+      {server != null && (
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+          renderTabBar={renderTabBar}
+        />
+      )}
+      <ServerSettings
+        isModalVisible={isSettingsModalVisible}
+        setIsModalVisible={setIsSettingsModalVisible}
+      ></ServerSettings>
     </SafeAreaView>
   );
 }
@@ -122,12 +134,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     alignItems: "center",
+    justifyContent: "space-between"
   },
   container: {
     flexDirection: "column",
     flex: 1,
-  },
-  button: {
-    width: 50,
   },
 });

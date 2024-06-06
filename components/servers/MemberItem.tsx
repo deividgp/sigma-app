@@ -11,7 +11,7 @@ export default function MemberItem({ member }) {
 
 const styles = StyleSheet.create({
   itemContainer: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#B04B2B",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

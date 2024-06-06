@@ -2,7 +2,7 @@ import { useSignal } from "@/context/signalContext";
 import { useUserStore } from "@/stores/userStore";
 import { Redirect, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MessageForm from "@/components/chat/MessageForm";
 import { ThemedText } from "@/components/ThemedText";
@@ -11,6 +11,10 @@ import axiosApiInstance from "@/helpers/axios";
 import { useFocusEffect } from "@react-navigation/native";
 import MessageItem from "@/components/chat/MessageItem";
 import { SafeAreaView } from "react-native-safe-area-context";
+import CustomButton from "@/components/CustomButton";
+import CustomTextInput from "@/components/CustomTextInput";
+import { Controller, useForm } from "react-hook-form";
+import { getConversationMessages } from "@/services/UserService";
 
 export default function ContactChat() {
   const { accessToken, refreshToken } = useAuth();
@@ -20,12 +24,20 @@ export default function ContactChat() {
   const params = useLocalSearchParams();
   const scrollViewRef = useRef(null);
   const [messages, setMessages] = useState([]);
+  const [searchedMessages, setSearchedMessages] = useState([]);
+  const [isSearchModalVisible, setIsSearchModalVisible] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
   useEffect(() => {
     axiosApiInstance
       .get(
         process.env.EXPO_PUBLIC_CONVERSATION_API_URL +
-          "Get?conversationId=" +
+          "Get/" +
           params.conversationId
       )
       .then(async (r) => {
@@ -54,9 +66,24 @@ export default function ContactChat() {
   const onSubmitMesssage = (data) => {
     connection.send("SendMessage", {
       conversationId: params.conversationId,
-      senderId: user?.id,
+      sender: {
+        id: user?.id,
+        username: user?.username,
+      },
       content: data.message,
     });
+  };
+
+  const onSubmitSearchMesssage = async (data) => {
+    if (data.message === "") return;
+
+    getConversationMessages(params.conversationId, data.search)
+      .then((r) => {
+        setSearchedMessages(r.data);
+      })
+      .catch(() => {
+        alert("Error finding messages");
+      });
   };
 
   return (
@@ -67,6 +94,10 @@ export default function ContactChat() {
         <SafeAreaView style={styles.container}>
           <View style={styles.titleContainer}>
             <ThemedText type="title">{params.contactUsername}</ThemedText>
+            <CustomButton
+              onPress={() => setIsSearchModalVisible(true)}
+              title="Search message"
+            />
           </View>
           <View style={styles.container}>
             <ScrollView
@@ -80,11 +111,7 @@ export default function ContactChat() {
                 messages.map((message) => {
                   return (
                     <MessageItem
-                      username={
-                        message.senderId == user?.id
-                          ? user?.username
-                          : params.contactUsername
-                      }
+                      username={message.sender.username}
                       message={message}
                       key={message.id}
                     ></MessageItem>
@@ -93,6 +120,46 @@ export default function ContactChat() {
             </ScrollView>
             <MessageForm onSubmitMessage={onSubmitMesssage} />
           </View>
+          <Modal
+            visible={isSearchModalVisible}
+            onRequestClose={() => setIsSearchModalVisible(false)}
+            transparent={false}
+            animationType="slide"
+          >
+            <View style={styles.messageSearchForm}>
+              <Controller
+                control={control}
+                defaultValue={""}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <CustomTextInput
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Message"
+                    width={200}
+                  />
+                )}
+                name="search"
+                rules={{ required: "You must enter the contact's username" }}
+              />
+              <CustomButton
+                title="Search"
+                onPress={handleSubmit(onSubmitSearchMesssage)}
+              />
+            </View>
+            <ScrollView>
+              {searchedMessages.length !== 0 &&
+                searchedMessages.map((message) => {
+                  return (
+                    <MessageItem
+                      username={message.sender.username}
+                      message={message}
+                      key={message.id}
+                    ></MessageItem>
+                  );
+                })}
+            </ScrollView>
+          </Modal>
         </SafeAreaView>
       )}
     </>
@@ -104,6 +171,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+    justifyContent: "space-between",
   },
   container: {
     flexDirection: "column",

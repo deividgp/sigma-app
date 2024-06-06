@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Button, TextInput } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Controller, useForm } from "react-hook-form";
+import CustomButton from "../CustomButton";
+import CustomTextInput from "../CustomTextInput";
+import { TextInput } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 
 export default function MessageForm({ onSubmitMessage }) {
   const {
@@ -9,6 +13,7 @@ export default function MessageForm({ onSubmitMessage }) {
     formState: { errors },
     reset
   } = useForm();
+  const { t } = useTranslation();
 
   const onSubmit = (data) => {
     if (data.message == '') return;
@@ -32,7 +37,7 @@ export default function MessageForm({ onSubmitMessage }) {
         )}
         name="message"
       />
-      <Button title="Send" onPress={handleSubmit(onSubmit)} />
+      <CustomButton title={t("send")} onPress={handleSubmit(onSubmit)} />
     </View>
   );
 }

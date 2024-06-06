@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Button, TextInput } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import useSignalR from "@/hooks/useSignalR";
 import { useAuth } from "@/context/authContext";
 import { useUserStore } from "@/stores/userStore";
 import { useSignal } from "@/context/signalContext";
+import CustomButton from "../CustomButton";
+import CustomTextInput from "../CustomTextInput";
+import { useTranslation } from "react-i18next";
 
 export default function AddContact() {
   const {
@@ -15,7 +18,8 @@ export default function AddContact() {
   } = useForm();
   const { user } = useUserStore();
   const { connection } = useSignal();
-
+  const { t } = useTranslation();
+  
   const onSubmit = (data) => {
     if (data.username == '') return;
 
@@ -27,6 +31,7 @@ export default function AddContact() {
       })
       .then((r: boolean) => {
         if (!r) {
+          alert("User does not exist");
           console.error("User does not exist");
         }
         reset();
@@ -39,27 +44,18 @@ export default function AddContact() {
         control={control}
         defaultValue={""}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
+          <CustomTextInput
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            placeholder="Username"
+            placeholder={t("username")}
+            width={200}
           />
         )}
         name="username"
         rules={{ required: "You must enter the contact's username" }}
       />
-      <Button title="Send request" onPress={handleSubmit(onSubmit)} />
+      <CustomButton title={t("sendRequest")} onPress={handleSubmit(onSubmit)} />
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    borderColor: "gray",
-    borderWidth: 1,
-    padding: 8,
-    width: 100,
-  },
-});

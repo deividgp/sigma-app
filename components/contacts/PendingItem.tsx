@@ -1,7 +1,8 @@
 import { useSignal } from "@/context/signalContext";
 import { useUserStore } from "@/stores/userStore";
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import CustomButton from "../CustomButton";
 
 export default function PendingItem({ pending }) {
   const { user } = useUserStore();
@@ -38,15 +39,15 @@ export default function PendingItem({ pending }) {
   return (
     <View style={styles.itemContainer}>
       <Text style={styles.title}>{pending.username}</Text>
-      <Button onPress={acceptContact} title="Accept" />
-      <Button onPress={rejectContact} title="Reject" />
+      <CustomButton onPress={acceptContact} title="Accept" />
+      <CustomButton onPress={rejectContact} title="Reject" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   itemContainer: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#B04B2B",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

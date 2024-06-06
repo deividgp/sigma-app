@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useTransition } from "react";
 import { router } from "expo-router";
-import { Button, Text, View, TextInput, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { useAuth } from "../context/authContext";
 import { useNavigation, Redirect } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
+import CustomButton from "@/components/CustomButton";
+import CustomTextInput from "@/components/CustomTextInput";
+import { useTranslation } from "react-i18next";
 
 export default function Signup() {
   const {
@@ -19,9 +22,10 @@ export default function Signup() {
     formState: { errors },
   } = useForm();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   if (isLoadingAccess || isLoadingRefresh) {
-    return <Text>Loading</Text>;
+    return <Text>{t("loading")}</Text>;
   }
 
   const onSubmit = (data) => {
@@ -32,7 +36,7 @@ export default function Signup() {
         navigation.navigate("(tabs)");
       })
       .catch(() => {
-        console.error("Invalid credentials");
+        alert("Error");
       });
   };
 
@@ -46,12 +50,12 @@ export default function Signup() {
             control={control}
             defaultValue={""}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
+              <CustomTextInput
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholder="Username"
+                placeholder={t("username")}
+                width={200}
               />
             )}
             name="username"
@@ -61,12 +65,12 @@ export default function Signup() {
             control={control}
             defaultValue={""}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
+              <CustomTextInput
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 placeholder="Email"
+                width={200}
               />
             )}
             name="email"
@@ -76,19 +80,19 @@ export default function Signup() {
             control={control}
             defaultValue={""}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
+              <CustomTextInput
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 placeholder="Password"
                 secureTextEntry={true}
+                width={200}
               />
             )}
             name="password"
             rules={{ required: "You must enter your password" }}
           />
-          <Button title="Sign up" onPress={handleSubmit(onSubmit)} />
+          <CustomButton title="Sign up" onPress={handleSubmit(onSubmit)} />
         </View>
       )}
     </>
