@@ -20,7 +20,6 @@ export default function ContactChat() {
   const { accessToken, refreshToken } = useAuth();
   const { user } = useUserStore();
   const { connection } = useSignal();
-  const navigation = useNavigation();
   const params = useLocalSearchParams();
   const scrollViewRef = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -64,6 +63,8 @@ export default function ContactChat() {
   }, [connection]);
 
   const onSubmitMesssage = (data) => {
+    if (data.message === "") return;
+
     connection.send("SendMessage", {
       conversationId: params.conversationId,
       sender: {
@@ -184,5 +185,10 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
     color: "#666",
+  },
+  messageSearchForm: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
 });

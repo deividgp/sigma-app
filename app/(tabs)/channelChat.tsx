@@ -57,6 +57,8 @@ export default function ChannelChat() {
   }, [serverConnection]);
 
   const onSubmitMesssage = (data) => {
+    if (data.message === "") return;
+
     serverConnection.send("SendMessage", {
       channelId: params.channelId,
       sender: {
