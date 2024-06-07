@@ -13,14 +13,16 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.deividgp.Sigma"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.deividgp.Sigma"
+      "package": "com.deividgp.Sigma",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",

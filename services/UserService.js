@@ -15,3 +15,12 @@ export async function getConversationMessages(conversationId, search) {
       search
   );
 }
+
+export async function updatePushToken(pushToken) {
+  return await axiosApiInstance.patch(
+    process.env.EXPO_PUBLIC_USER_API_URL + "UpdatePushToken",
+    {
+      PushToken: pushToken,
+    }
+  );
+}

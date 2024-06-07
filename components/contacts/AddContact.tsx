@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Controller, useForm } from "react-hook-form";
-import useSignalR from "@/hooks/useSignalR";
 import { useAuth } from "@/context/authContext";
 import { useUserStore } from "@/stores/userStore";
 import { useSignal } from "@/context/signalContext";
