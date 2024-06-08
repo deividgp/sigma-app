@@ -15,5 +15,6 @@
     "server": "Server",
     "contacts": "Contacts",
     "username": "Username",
-    "pending": "Pending"
+    "pending": "Pending",
+    "addServer": "Add server"
 }

@@ -26,19 +26,21 @@ export default function ContactItem({ contact }) {
   return (
     <View style={styles.itemContainer}>
       <Text style={styles.title}>{contact.username}</Text>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("contactChat", {
-            conversationId: contact.conversationId,
-            contactUsername: contact.username,
-          })
-        }
-      >
-        <Ionicons name="chatbox-outline" size={50} color="black" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={removeContact}>
-        <Ionicons name="person-remove-outline" size={50} color="black" />
-      </TouchableOpacity>
+      <View style={styles.actionsContainer}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("contactChat", {
+              conversationId: contact.conversationId,
+              contactUsername: contact.username,
+            })
+          }
+        >
+          <Ionicons name="chatbox-outline" size={50} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={removeContact}>
+          <Ionicons name="person-remove-outline" size={50} color="black" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -57,6 +59,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     flexDirection: "row",
     gap: 50,
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 18,
@@ -65,5 +68,9 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
     color: "#666",
+  },
+  actionsContainer: {
+    flexDirection: "row",
+    gap: 25,
   },
 });

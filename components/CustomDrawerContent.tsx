@@ -10,9 +10,11 @@ import { TabBarIcon } from "./navigation/TabBarIcon";
 import { useState } from "react";
 import AddServer from "./servers/AddServer";
 import { ThemedText } from "./ThemedText";
+import { useTranslation } from "react-i18next";
 
 export default function CustomDrawerContent(props: any) {
   const { user } = useUserStore();
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -20,7 +22,7 @@ export default function CustomDrawerContent(props: any) {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
-        label={"Add server"}
+        label={t("addServer")}
         onPress={() => setIsModalVisible(true)}
         icon={({ focused, size }) => (
           <TabBarIcon

@@ -83,7 +83,10 @@ export default function ServersScreen() {
   );
 
   const channelsRoute = () => (
-    <ChannelsList channels={server!.channels}></ChannelsList>
+    <ChannelsList
+      channels={server!.channels}
+      isOwner={server.ownerId == user?.id}
+    ></ChannelsList>
   );
 
   const renderScene = SceneMap({
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   container: {
     flexDirection: "column",

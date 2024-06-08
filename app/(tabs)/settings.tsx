@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomButton from "@/components/CustomButton";
 
-export default function ProfileScreen() {
+export default function SettingsScreen() {
   const { logOut } = useAuth();
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const { i18n } = useTranslation();
@@ -30,7 +30,7 @@ export default function ProfileScreen() {
       <Picker selectedValue={selectedLanguage} onValueChange={onLanguageChange}>
         <Picker.Item label="English" value="en"></Picker.Item>
         <Picker.Item label="Español" value="es"></Picker.Item>
-        <Picker.Item label="Català" value="cat"></Picker.Item>
+        <Picker.Item label="Català" value="ca"></Picker.Item>
       </Picker>
     </>
   );

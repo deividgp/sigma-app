@@ -15,5 +15,6 @@
     "server": "Servidor",
     "contacts": "Contactos",
     "username": "Nombre de usuario",
-    "pending": "Pendiente"
+    "pending": "Pendiente",
+    "addServer": "Añadir servidor"
 }

@@ -1,4 +1,3 @@
-import { Tabs, useFocusEffect } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import React, { useState } from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
@@ -125,7 +124,7 @@ export default function AppLayout() {
           screenOptions={{
             drawerType: "front",
             drawerStyle: {
-              width: 200,
+              width: 250,
             },
           }}
         >
@@ -144,10 +143,10 @@ export default function AppLayout() {
             }}
           ></Drawer.Screen>
           <Drawer.Screen
-            name="profile"
+            name="settings"
             options={{
-              title: "Profile",
-              drawerLabel: "Profile",
+              title: "Settings",
+              drawerLabel: "Settings",
               drawerIcon: ({ focused, size }) => (
                 <Ionicons
                   name="person-outline"

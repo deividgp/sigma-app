@@ -40,7 +40,7 @@ export default function ChannelChat() {
       .catch((e) => {
         console.error(e);
       });
-  }, []);
+  }, [params.channelId]);
 
   useEffect(() => {
     if (!serverConnection) return;
@@ -54,7 +54,7 @@ export default function ChannelChat() {
       serverConnection.send("LeaveChannel", params.channelId);
       serverConnection.off("ReceiveChannelMessage");
     };
-  }, [serverConnection]);
+  }, [serverConnection, params.channelId]);
 
   const onSubmitMesssage = (data) => {
     if (data.message === "") return;

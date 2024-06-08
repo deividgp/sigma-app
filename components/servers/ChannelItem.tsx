@@ -5,7 +5,7 @@ import { useNavigation } from "expo-router";
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function ChannelItem({ channel }) {
+export default function ChannelItem({ channel, isOwner }) {
   const navigation = useNavigation();
   const { serverConnection } = useSignal();
   const { server } = useServer();
@@ -23,16 +23,18 @@ export default function ChannelItem({ channel }) {
       >
         <Ionicons name="chatbox-outline" size={50} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() =>
-          serverConnection.send("SendDeleteChannel", {
-            serverId: server?.id,
-            channelId: channel.id,
-          })
-        }
-      >
-        <Ionicons name="trash-outline" size={50} color="black" />
-      </TouchableOpacity>
+      {isOwner && (
+        <TouchableOpacity
+          onPress={() =>
+            serverConnection.send("SendDeleteChannel", {
+              serverId: server?.id,
+              channelId: channel.id,
+            })
+          }
+        >
+          <Ionicons name="trash-outline" size={50} color="black" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -51,6 +53,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     flexDirection: "row",
     gap: 50,
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 18,

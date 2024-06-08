@@ -8,7 +8,6 @@ import MessageForm from "@/components/chat/MessageForm";
 import { ThemedText } from "@/components/ThemedText";
 import { useAuth } from "@/context/authContext";
 import axiosApiInstance from "@/helpers/axios";
-import { useFocusEffect } from "@react-navigation/native";
 import MessageItem from "@/components/chat/MessageItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/CustomButton";
@@ -46,7 +45,7 @@ export default function ContactChat() {
       .catch((e) => {
         console.error(e);
       });
-  }, []);
+  }, [params.conversationId]);
 
   useEffect(() => {
     if (!connection) return;
@@ -60,7 +59,7 @@ export default function ContactChat() {
       connection.send("LeaveConversation", params.conversationId);
       connection.off("ReceiveConversationMessage");
     };
-  }, [connection]);
+  }, [connection, params.conversationId]);
 
   const onSubmitMesssage = (data) => {
     if (data.message === "") return;
