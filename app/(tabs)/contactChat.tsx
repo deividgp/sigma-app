@@ -96,7 +96,7 @@ export default function ContactChat() {
             <ThemedText type="title">{params.contactUsername}</ThemedText>
             <CustomButton
               onPress={() => setIsSearchModalVisible(true)}
-              title="Search message"
+              title="Search messages"
             />
           </View>
           <View style={styles.container}>

@@ -42,7 +42,8 @@ export default function AppLayout() {
   }, []);
 
   useEffect(() => {
-    if (!accessToken || connected) return;
+    //if (!accessToken || connected) return;
+    if (!accessToken) return;
 
     try {
       const connection = createSignalRConnection(
@@ -109,6 +110,10 @@ export default function AppLayout() {
             );
         })
         .catch((error) => console.log("User hub connection failed: ", error));
+      return () => {
+        connection.stop();
+        serverConnection.stop();
+      };
     } catch (e) {
       console.error(e);
     }

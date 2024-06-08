@@ -91,7 +91,7 @@ export default function ChannelChat() {
             <ThemedText type="title">{params.channelName}</ThemedText>
             <CustomButton
               onPress={() => setIsSearchModalVisible(true)}
-              title="Search message"
+              title="Search messages"
             />
           </View>
           <View style={styles.container}>

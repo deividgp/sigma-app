@@ -21,23 +21,19 @@ export default function AddServer() {
   const onSubmitCreate = (data) => {
     if (data.servername == "") return;
 
-    let serverPassword = data.data.serverpassword;
-
-    if (data.serverpassword == "") serverPassword = null;
-
     serverConnection
       .invoke("SendCreateServer", {
         OwnerId: user?.id,
         OwnerUsername: user?.username,
         ServerName: data.servername,
-        ServerPassword: serverPassword,
+        ServerPassword: data.serverpassword == "" ? null : data.serverpassword,
       })
       .then((r: boolean) => {
-        if (r) {
-          console.log("Success");
-        } else {
+        if (!r) {
           alert("Error creating the server");
+          return;
         }
+
         reset();
       });
   };
@@ -45,23 +41,19 @@ export default function AddServer() {
   const onSubmitJoin = (data) => {
     if (data.servername == "") return;
 
-    let serverPassword = data.data.serverpassword;
-
-    if (data.serverpassword == "") serverPassword = null;
-
     serverConnection
       .invoke("SendAddMember", {
         UserId: user?.id,
         Username: user?.username,
         ServerName: data.servername,
-        ServerPassword: serverPassword,
+        ServerPassword: data.serverpassword == "" ? null : data.serverpassword,
       })
       .then((r: boolean) => {
-        if (r) {
-          console.log("Success");
-        } else {
+        if (!r) {
           alert("Error joining the server");
+          return;
         }
+
         reset();
       });
   };
@@ -101,16 +93,7 @@ export default function AddServer() {
         title={t("create")}
         onPress={handleSubmit(onSubmitCreate)}
       />
-      <CustomButton title={t("create")} onPress={handleSubmit(onSubmitJoin)} />
+      <CustomButton title={t("join")} onPress={handleSubmit(onSubmitJoin)} />
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    borderColor: "gray",
-    borderWidth: 1,
-    padding: 8,
-    width: 100,
-  },
-});

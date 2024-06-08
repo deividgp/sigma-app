@@ -1,6 +1,7 @@
 import React from "react";
 import { useStorageState } from "../hooks/useStorageState";
 import axios from "axios";
+import { updatePushToken } from "@/services/UserService";
 
 const AuthContext = React.createContext<{
   logIn: (data: LoginCredentials) => Promise<unknown>;
@@ -63,7 +64,7 @@ export function AuthProvider(props: React.PropsWithChildren) {
           process.env.EXPO_PUBLIC_SECURITY_API_URL + type,
           data
         );
-
+        console.log("TOKEN: " + response.data.accessToken);
         setAccessToken(response.data.accessToken);
         setRefreshToken(response.data.refreshToken);
         resolve(true);
@@ -83,6 +84,11 @@ export function AuthProvider(props: React.PropsWithChildren) {
           return await postCredentials(data, "SignUp");
         },
         logOut: () => {
+          updatePushToken(null)
+            .then(() => {})
+            .catch((e) => {
+              console.log(e);
+            });
           setAccessToken(null);
           setRefreshToken(null);
         },
