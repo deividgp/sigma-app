@@ -33,7 +33,7 @@ export default function AddServer() {
           alert("Error creating the server");
           return;
         }
-
+        
         reset();
       });
   };

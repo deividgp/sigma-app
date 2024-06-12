@@ -1,13 +1,15 @@
 import { useServer } from "@/context/serverContext";
 import { useSignal } from "@/context/signalContext";
+import { useUserStore } from "@/stores/userStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function ChannelItem({ channel, isOwner }) {
+export default function ChannelItem({ channel }) {
   const navigation = useNavigation();
   const { serverConnection } = useSignal();
+  const { user } = useUserStore();
   const { server } = useServer();
 
   return (
@@ -23,7 +25,7 @@ export default function ChannelItem({ channel, isOwner }) {
       >
         <Ionicons name="chatbox-outline" size={50} color="black" />
       </TouchableOpacity>
-      {isOwner && (
+      {server.ownerId == user?.id && (
         <TouchableOpacity
           onPress={() =>
             serverConnection.send("SendDeleteChannel", {

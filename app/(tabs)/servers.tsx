@@ -73,8 +73,23 @@ export default function ServersScreen() {
       );
     });
 
+    serverConnection.on("ReceiveMemberRemove", (data) => {
+      setServer(
+        produce((draft) => {
+          const index = draft.members.findIndex(
+            (item) => item.id === data.memberId
+          );
+          if (index !== -1) {
+            draft.channels.splice(index, 1);
+          }
+        })
+      );
+    });
+
     return () => {
       serverConnection.off("ReceiveChannelCreate");
+      serverConnection.off("ReceiveChannelDelete");
+      serverConnection.off("ReceiveMemberRemove");
     };
   }, [server]);
 
@@ -83,10 +98,7 @@ export default function ServersScreen() {
   );
 
   const channelsRoute = () => (
-    <ChannelsList
-      channels={server!.channels}
-      isOwner={server.ownerId == user?.id}
-    ></ChannelsList>
+    <ChannelsList channels={server!.channels}></ChannelsList>
   );
 
   const renderScene = SceneMap({
@@ -108,10 +120,21 @@ export default function ServersScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
         <ThemedText type="title">{server?.name}</ThemedText>
-        {server != null && server.ownerId == user.id && (
+        {server != null && server.ownerId == user?.id && (
           <CustomButton
             onPress={() => setIsSettingsModalVisible(true)}
             title="Server settings"
+          />
+        )}
+        {server != null && server.ownerId != user?.id && (
+          <CustomButton
+            onPress={() =>
+              serverConnection.send("SendRemoveMember", {
+                serverId: server?.id,
+                memberId: user?.id,
+              })
+            }
+            title="Leave server"
           />
         )}
       </View>

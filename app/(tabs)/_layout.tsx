@@ -93,6 +93,10 @@ export default function AppLayout() {
                 });
               });
 
+              serverConnection.on("ReceiveServerDelete", (data) => {
+                removeServer(data);
+              });
+
               serverConnection.on("ReceiveAddMember", (data) => {
                 connection.invoke("SendJoinServer", {
                   UserId: data.userId,
