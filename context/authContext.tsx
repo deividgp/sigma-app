@@ -83,13 +83,14 @@ export function AuthProvider(props: React.PropsWithChildren) {
           return await postCredentials(data, "SignUp");
         },
         logOut: () => {
-          updatePushToken(null)
-            .then(() => {})
+          updatePushToken("")
+            .then(() => {
+              setAccessToken(null);
+              setRefreshToken(null);
+            })
             .catch((e) => {
-              console.log(e);
+              console.error(e);
             });
-          setAccessToken(null);
-          setRefreshToken(null);
         },
         accessToken,
         refreshToken,

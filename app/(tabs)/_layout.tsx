@@ -7,7 +7,7 @@ import { useAuth } from "@/context/authContext";
 import { useUserStore } from "@/stores/userStore";
 import createSignalRConnection from "@/helpers/createSignalRConnection";
 import { useSignal } from "@/context/signalContext";
-import { getUser, updatePushToken } from "@/services/UserService";
+import { getUser } from "@/services/UserService";
 import CustomDrawerContent from "@/components/CustomDrawerContent";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
