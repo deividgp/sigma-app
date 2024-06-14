@@ -13,7 +13,7 @@ export default function MemberItem({ member }) {
   return (
     <View style={styles.itemContainer}>
       <Text style={styles.title}>{member.username}</Text>
-      {server.ownerId == user?.id && (
+      {server.ownerId == user?.id && server.ownerId != member?.id && (
         <TouchableOpacity
           onPress={() =>
             serverConnection.send("SendRemoveMember", {

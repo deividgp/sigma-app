@@ -70,7 +70,6 @@ export const usePushNotifications = (): PushNotificationState => {
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token);
-      console.log(token.data);
       updatePushToken(token.data)
         .then(() => {})
         .catch((e) => {

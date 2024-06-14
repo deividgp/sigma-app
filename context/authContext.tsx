@@ -64,7 +64,6 @@ export function AuthProvider(props: React.PropsWithChildren) {
           process.env.EXPO_PUBLIC_SECURITY_API_URL + type,
           data
         );
-        console.log("TOKEN: " + response.data.accessToken);
         setAccessToken(response.data.accessToken);
         setRefreshToken(response.data.refreshToken);
         resolve(true);
