@@ -32,5 +32,7 @@
     "joinServerError": "Error joining the server",
     "createServerError": "Error creating the server",
     "searchMessagesError": "Error searching messages",
-    "servers": "Servers"
+    "servers": "Servers",
+    "members": "Members",
+    "channels": "Channels"
 }

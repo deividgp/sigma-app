@@ -1,8 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { StyleSheet, View, useWindowDimensions } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { useLocalSearchParams } from "expo-router";
 import { ChannelsList } from "@/components/servers/ChannelsList";
@@ -26,11 +22,18 @@ export default function ServersScreen() {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const params = useLocalSearchParams();
   const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: "channels", title: "Channels" },
-    { key: "members", title: "Members" },
+  const { i18n, t } = useTranslation();
+  const [routes, setRoutes] = useState([
+    { key: "channels", title: t("channels") },
+    { key: "members", title: t("members") },
   ]);
-  const { t } = useTranslation();
+
+  useEffect(() => {
+    setRoutes([
+      { key: "channels", title: t("channels") },
+      { key: "members", title: t("members") },
+    ]);
+  }, [i18n.language]);
 
   useEffect(() => {
     getServer(params.serverId)

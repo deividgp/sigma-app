@@ -32,5 +32,7 @@
     "joinServerError": "Error unint-se al servidor",
     "createServerError": "Error creant el servidor",
     "searchMessagesError": "Error buscant missatges",
-    "servers": "Servidors"
+    "servers": "Servidors",
+    "members": "Membres",
+    "channels": "Canals"
 }
