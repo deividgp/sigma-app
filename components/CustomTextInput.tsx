@@ -3,12 +3,12 @@ import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
 export default function CustomTextInput({
-  onBlur,
-  onChangeText,
-  value,
+  onBlur = null,
+  onChangeText = null,
+  value = null,
   placeholder,
   secureTextEntry = false,
-  width
+  width = null
 }) {
   return (
     <View style={[styles.inputContainer, { width }]}>
