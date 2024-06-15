@@ -15,28 +15,30 @@ export default function ChannelItem({ channel }) {
   return (
     <View style={styles.itemContainer}>
       <Text style={styles.title}>{channel.name}</Text>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("channelChat", {
-            channelId: channel.id,
-            channelName: channel.name,
-          })
-        }
-      >
-        <Ionicons name="chatbox-outline" size={50} color="black" />
-      </TouchableOpacity>
-      {server.ownerId == user?.id && (
+      <View style={styles.actionsContainer}>
         <TouchableOpacity
           onPress={() =>
-            serverConnection.send("SendDeleteChannel", {
-              serverId: server?.id,
+            navigation.navigate("channelChat", {
               channelId: channel.id,
+              channelName: channel.name,
             })
           }
         >
-          <Ionicons name="trash-outline" size={50} color="black" />
+          <Ionicons name="chatbox-outline" size={50} color="black" />
         </TouchableOpacity>
-      )}
+        {server.ownerId == user?.id && (
+          <TouchableOpacity
+            onPress={() =>
+              serverConnection.send("SendDeleteChannel", {
+                serverId: server?.id,
+                channelId: channel.id,
+              })
+            }
+          >
+            <Ionicons name="trash-outline" size={50} color="black" />
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
@@ -61,8 +63,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  description: {
-    fontSize: 14,
-    color: "#666",
+  actionsContainer: {
+    flexDirection: "row",
+    gap: 25,
   },
 });
