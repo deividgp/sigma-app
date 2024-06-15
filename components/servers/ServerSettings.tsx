@@ -4,11 +4,13 @@ import CustomButton from "../CustomButton";
 import { useSignal } from "@/context/signalContext";
 import { useServer } from "@/context/serverContext";
 import { useNavigation } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 export default function ServerSettings({ isModalVisible, setIsModalVisible }) {
   const { serverConnection } = useSignal();
   const { server } = useServer();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const onPressDeleteServer = () => {
     serverConnection
@@ -18,7 +20,7 @@ export default function ServerSettings({ isModalVisible, setIsModalVisible }) {
           setIsModalVisible(false);
           navigation.navigate("index");
         } else {
-          alert("Error deleting the server");
+          alert(t("deleteServerError"));
         }
       });
   };
@@ -39,7 +41,7 @@ export default function ServerSettings({ isModalVisible, setIsModalVisible }) {
         }}
       >
         <AddChannel />
-        <CustomButton title={"Delete server"} onPress={onPressDeleteServer} />
+        <CustomButton title={t("deleteServer")} onPress={onPressDeleteServer} />
       </View>
     </Modal>
   );

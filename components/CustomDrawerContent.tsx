@@ -5,7 +5,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { useNavigation } from "expo-router";
-import { Text, Image, Modal, View, StyleSheet } from "react-native";
+import { Modal, View, StyleSheet } from "react-native";
 import { TabBarIcon } from "./navigation/TabBarIcon";
 import { useState } from "react";
 import AddServer from "./servers/AddServer";
@@ -34,7 +34,7 @@ export default function CustomDrawerContent(props: any) {
       ></DrawerItem>
       {user != null && user.servers.length > 0 && (
         <View style={styles.container}>
-          <ThemedText type="subtitle">Servers</ThemedText>
+          <ThemedText type="subtitle">{t("servers")}</ThemedText>
         </View>
       )}
       {user != null &&

@@ -1,19 +1,19 @@
 import { useSignal } from "@/context/signalContext";
 import { useUserStore } from "@/stores/userStore";
-import { Redirect, useLocalSearchParams, useNavigation } from "expo-router";
+import { Redirect, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { View, StyleSheet, Modal } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import MessageForm from "@/components/chat/MessageForm";
 import { ThemedText } from "@/components/ThemedText";
 import { useAuth } from "@/context/authContext";
-import axiosApiInstance from "@/helpers/axios";
 import MessageItem from "@/components/chat/MessageItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/CustomButton";
 import { Controller, useForm } from "react-hook-form";
 import CustomTextInput from "@/components/CustomTextInput";
 import { getChannel, getChannelMessages } from "@/services/ServerService";
+import { useTranslation } from "react-i18next";
 
 export default function ChannelChat() {
   const { accessToken, refreshToken } = useAuth();
@@ -30,6 +30,7 @@ export default function ChannelChat() {
     formState: { errors },
     reset,
   } = useForm();
+  const { t } = useTranslation();
 
   useEffect(() => {
     getChannel(params.channelId)
@@ -77,7 +78,7 @@ export default function ChannelChat() {
         setSearchedMessages(r.data);
       })
       .catch(() => {
-        alert("Error finding messages");
+        alert(t("searchMessagesError"));
       });
   };
 
@@ -91,7 +92,7 @@ export default function ChannelChat() {
             <ThemedText type="title">{params.channelName}</ThemedText>
             <CustomButton
               onPress={() => setIsSearchModalVisible(true)}
-              title="Search messages"
+              title={t("searchMessages")}
             />
           </View>
           <View style={styles.container}>
@@ -130,7 +131,7 @@ export default function ChannelChat() {
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    placeholder="Message"
+                    placeholder={t("message")}
                     width={200}
                   />
                 )}
@@ -138,7 +139,7 @@ export default function ChannelChat() {
                 rules={{ required: "You must enter the contact's username" }}
               />
               <CustomButton
-                title="Search"
+                title={t("search")}
                 onPress={handleSubmit(onSubmitSearchMesssage)}
               />
             </View>

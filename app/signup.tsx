@@ -69,7 +69,7 @@ export default function Signup() {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholder="Email"
+                placeholder={t("email")}
                 width={200}
               />
             )}
@@ -84,7 +84,7 @@ export default function Signup() {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholder="Password"
+                placeholder={t("password")}
                 secureTextEntry={true}
                 width={200}
               />
@@ -92,7 +92,7 @@ export default function Signup() {
             name="password"
             rules={{ required: "You must enter your password" }}
           />
-          <CustomButton title="Sign up" onPress={handleSubmit(onSubmit)} />
+          <CustomButton title={t("signup")} onPress={handleSubmit(onSubmit)} />
         </View>
       )}
     </>

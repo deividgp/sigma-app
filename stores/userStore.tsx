@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 type UserStore = {
   user: User | null;
-  updateUser: (data) => void;
+  updateUser: (data: any) => void;
   addContact: (contact: ContactUser) => void;
   removeContact: (id: string) => void;
   addPending: (pending: PartialUser) => void;

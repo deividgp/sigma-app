@@ -42,7 +42,6 @@ export default function AppLayout() {
   }, []);
 
   useEffect(() => {
-    //if (!accessToken || connected) return;
     if (!accessToken) return;
 
     try {
@@ -154,8 +153,8 @@ export default function AppLayout() {
           <Drawer.Screen
             name="settings"
             options={{
-              title: "Settings",
-              drawerLabel: "Settings",
+              title: t("settings"),
+              drawerLabel: t("settings"),
               drawerIcon: ({ focused, size }) => (
                 <Ionicons
                   name="person-outline"

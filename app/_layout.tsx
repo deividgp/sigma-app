@@ -1,13 +1,8 @@
 import { useFonts } from "expo-font";
-import { Slot, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { useAuth } from "@/context/authContext";
-import { useSignal } from "@/context/signalContext";
-import createSignalRConnection from "@/helpers/createSignalRConnection";
-import { useUserStore } from "@/stores/userStore";
 import Providers from "./providers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";

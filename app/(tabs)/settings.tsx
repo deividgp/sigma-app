@@ -10,7 +10,7 @@ import CustomButton from "@/components/CustomButton";
 export default function SettingsScreen() {
   const { logOut } = useAuth();
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   useEffect(() => {
     setSelectedLanguage(i18n.language);
@@ -25,7 +25,7 @@ export default function SettingsScreen() {
   return (
     <>
       <View style={styles.stepContainer}>
-        <CustomButton title="Log Out" onPress={logOut} />
+        <CustomButton title={t("logout")} onPress={logOut} />
       </View>
       <Picker selectedValue={selectedLanguage} onValueChange={onLanguageChange}>
         <Picker.Item label="English" value="en"></Picker.Item>

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import CustomButton from "../CustomButton";
-import CustomTextInput from "../CustomTextInput";
 import { TextInput } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
 
@@ -32,7 +31,7 @@ export default function MessageForm({ onSubmitMessage }) {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            placeholder="Message"
+            placeholder={t("message")}
           />
         )}
         name="message"

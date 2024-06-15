@@ -16,5 +16,21 @@
     "contacts": "Contactes",
     "username": "Nom d'usuari",
     "pending": "Pendent",
-    "addServer": "Afegir servidor"
+    "addServer": "Afegir servidor",
+    "settings": "Opcions",
+    "message": "Missatge",
+    "optionalPassword": "Contrasenya (opcional)",
+    "email": "Correu",
+    "usernameEmail": "Nom d'usuari / Correu",
+    "deleteServer": "Eliminar servidor",
+    "leaveServer": "Deixar servidor",
+    "searchMessages": "Buscar missatges",
+    "search": "Buscar",
+    "invalidCredentialsError": "Credencials no vàlides",
+    "userNotExistsError": "L'usuari no existeix",
+    "deleteServerError": "Error eliminant el servidor",
+    "joinServerError": "Error unint-se al servidor",
+    "createServerError": "Error creant el servidor",
+    "searchMessagesError": "Error buscant missatges",
+    "servers": "Servidors"
 }

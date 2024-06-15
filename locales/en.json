@@ -16,5 +16,21 @@
     "contacts": "Contacts",
     "username": "Username",
     "pending": "Pending",
-    "addServer": "Add server"
+    "addServer": "Add server",
+    "settings": "Settings",
+    "message": "Message",
+    "optionalPassword": "Password (optional)",
+    "email": "Email",
+    "usernameEmail": "Username / Email",
+    "deleteServer": "Delete server",
+    "leaveServer": "Leave server",
+    "searchMessages": "Search messages",
+    "search": "Search",
+    "invalidCredentialsError": "Invalid credentials",
+    "userNotExistsError": "User does not exist",
+    "deleteServerError": "Error deleting the server",
+    "joinServerError": "Error joining the server",
+    "createServerError": "Error creating the server",
+    "searchMessagesError": "Error searching messages",
+    "servers": "Servers"
 }

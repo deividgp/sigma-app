@@ -30,7 +30,7 @@ export default function AddServer() {
       })
       .then((r: boolean) => {
         if (!r) {
-          alert("Error creating the server");
+          alert(t("createServerError"));
           return;
         }
         
@@ -50,7 +50,7 @@ export default function AddServer() {
       })
       .then((r: boolean) => {
         if (!r) {
-          alert("Error joining the server");
+          alert(t("joinServerError"));
           return;
         }
 
@@ -82,7 +82,7 @@ export default function AddServer() {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            placeholder="Password (optional)"
+            placeholder={t("optionalPassword")}
             secureTextEntry={true}
             width={200}
           />

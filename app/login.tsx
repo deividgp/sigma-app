@@ -36,8 +36,8 @@ export default function Login() {
         navigation.navigate("(tabs)");
       })
       .catch(() => {
-        alert("Invalid credentials");
-        console.error("Invalid credentials");
+        alert(t("invalidCredentialsError"));
+        console.error(t("invalidCredentialsError"));
       });
   };
 
@@ -55,7 +55,7 @@ export default function Login() {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholder="Username / Email"
+                placeholder={t("usernameEmail")}
                 width={200}
               />
             )}
@@ -70,7 +70,7 @@ export default function Login() {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholder="Password"
+                placeholder={t("password")}
                 secureTextEntry={true}
                 width={200}
               />

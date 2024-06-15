@@ -14,6 +14,7 @@ import CustomButton from "@/components/CustomButton";
 import CustomTextInput from "@/components/CustomTextInput";
 import { Controller, useForm } from "react-hook-form";
 import { getConversationMessages } from "@/services/UserService";
+import { useTranslation } from "react-i18next";
 
 export default function ContactChat() {
   const { accessToken, refreshToken } = useAuth();
@@ -30,7 +31,8 @@ export default function ContactChat() {
     formState: { errors },
     reset,
   } = useForm();
-
+  const { t } = useTranslation();
+  
   useEffect(() => {
     axiosApiInstance
       .get(
@@ -82,7 +84,7 @@ export default function ContactChat() {
         setSearchedMessages(r.data);
       })
       .catch(() => {
-        alert("Error finding messages");
+        alert(t("searchMessagesError"));
       });
   };
 
@@ -96,7 +98,7 @@ export default function ContactChat() {
             <ThemedText type="title">{params.contactUsername}</ThemedText>
             <CustomButton
               onPress={() => setIsSearchModalVisible(true)}
-              title="Search messages"
+              title={t("searchMessages")}
             />
           </View>
           <View style={styles.container}>
@@ -135,7 +137,7 @@ export default function ContactChat() {
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    placeholder="Message"
+                    placeholder={t("message")}
                     width={200}
                   />
                 )}
@@ -143,7 +145,7 @@ export default function ContactChat() {
                 rules={{ required: "You must enter the contact's username" }}
               />
               <CustomButton
-                title="Search"
+                title={t("search")}
                 onPress={handleSubmit(onSubmitSearchMesssage)}
               />
             </View>

@@ -1,24 +1,15 @@
 import {
   StyleSheet,
-  Image,
-  Platform,
   View,
-  TouchableOpacity,
-  Modal,
   useWindowDimensions,
 } from "react-native";
-
 import { ThemedText } from "@/components/ThemedText";
-import { useLocalSearchParams, useNavigation } from "expo-router";
-import { ScrollView } from "react-native-gesture-handler";
+import { useLocalSearchParams } from "expo-router";
 import { ChannelsList } from "@/components/servers/ChannelsList";
 import React, { useEffect, useState } from "react";
 import { MembersList } from "@/components/servers/MembersList";
 import { useUserStore } from "@/stores/userStore";
-import ServerItem from "@/components/servers/ServerItem";
 import { getServer } from "@/services/ServerService";
-import { Ionicons } from "@expo/vector-icons";
-import AddChannel from "@/components/servers/AddChannel";
 import { useSignal } from "@/context/signalContext";
 import { produce } from "immer";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -26,6 +17,7 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import ServerSettings from "@/components/servers/ServerSettings";
 import { useServer } from "@/context/serverContext";
 import CustomButton from "@/components/CustomButton";
+import { useTranslation } from "react-i18next";
 
 export default function ServersScreen() {
   const { server, setServer } = useServer();
@@ -38,6 +30,7 @@ export default function ServersScreen() {
     { key: "channels", title: "Channels" },
     { key: "members", title: "Members" },
   ]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     getServer(params.serverId)
@@ -123,7 +116,7 @@ export default function ServersScreen() {
         {server != null && server.ownerId == user?.id && (
           <CustomButton
             onPress={() => setIsSettingsModalVisible(true)}
-            title="Server settings"
+            title={t("serverSettings")}
           />
         )}
         {server != null && server.ownerId != user?.id && (
@@ -134,7 +127,7 @@ export default function ServersScreen() {
                 memberId: user?.id,
               })
             }
-            title="Leave server"
+            title={t("leaveServer")}
           />
         )}
       </View>

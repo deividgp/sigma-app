@@ -30,8 +30,8 @@ export default function AddContact() {
       })
       .then((r: boolean) => {
         if (!r) {
-          alert("User does not exist");
-          console.error("User does not exist");
+          alert(t("userNotExistsError"));
+          console.error(t("userNotExistsError"));
         }
         reset();
       });
