@@ -38,6 +38,7 @@ export default function ServerSettings({ isModalVisible, setIsModalVisible }) {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          gap: 15
         }}
       >
         <AddChannel />
