@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MessageForm from "@/components/chat/MessageForm";
-import { ThemedText } from "@/components/ThemedText";
+import ThemedText from "@/components/ThemedText";
 import { useAuth } from "@/context/authContext";
 import axiosApiInstance from "@/helpers/axios";
 import MessageItem from "@/components/chat/MessageItem";

@@ -1,5 +1,4 @@
-import { Image, StyleSheet, Platform, View } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
+import { StyleSheet, View } from "react-native";
 import { useAuth } from "@/context/authContext";
 import React, { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";

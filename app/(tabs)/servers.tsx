@@ -1,5 +1,5 @@
 import { StyleSheet, View, useWindowDimensions } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
+import ThemedText from "@/components/ThemedText";
 import { useLocalSearchParams } from "expo-router";
 import { ChannelsList } from "@/components/servers/ChannelsList";
 import React, { useEffect, useState } from "react";

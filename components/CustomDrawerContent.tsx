@@ -9,7 +9,7 @@ import { Modal, View, StyleSheet } from "react-native";
 import { TabBarIcon } from "./navigation/TabBarIcon";
 import { useState } from "react";
 import AddServer from "./servers/AddServer";
-import { ThemedText } from "./ThemedText";
+import ThemedText from "./ThemedText";
 import { useTranslation } from "react-i18next";
 
 export default function CustomDrawerContent(props: any) {
