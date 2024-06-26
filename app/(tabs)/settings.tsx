@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { useAuth } from "@/context/authContext";
 import React, { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
@@ -18,7 +18,12 @@ export default function SettingsScreen() {
   const onLanguageChange = async (itemValue) => {
     i18n.changeLanguage(itemValue);
     setSelectedLanguage(itemValue);
-    await AsyncStorage.setItem("languageCode", itemValue);
+
+    if (Platform.OS === "web") {
+      localStorage.setItem("languageCode", itemValue);
+    } else {
+      await AsyncStorage.setItem("languageCode", itemValue);
+    }
   };
 
   return (

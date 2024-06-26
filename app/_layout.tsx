@@ -6,6 +6,7 @@ import "react-native-reanimated";
 import Providers from "./providers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
+import { Platform } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -18,7 +19,13 @@ export default function RootLayout() {
 
   useEffect(() => {
     const initI18n = async () => {
-      const lang = await AsyncStorage.getItem("languageCode");
+      let lang;
+
+      if (Platform.OS === "web") {
+        lang = localStorage.getItem("languageCode");
+      } else {
+        lang = await AsyncStorage.getItem("languageCode");
+      }
 
       if (lang != null) {
         i18n.changeLanguage(lang);

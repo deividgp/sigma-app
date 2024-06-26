@@ -4,14 +4,7 @@ export default function ServerItem({ server, onPress }) {
 
   return (
     <TouchableOpacity onPress={onPress}>
-      {server.icon ? (
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.logo}
-        />
-      ) : (
         <Text>{server.name}</Text>
-      )}
     </TouchableOpacity>
   );
 }
